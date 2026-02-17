@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+/* 1. Sources are handled automatically in many cases, but keeping them is fine */
+@source "../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php";
+@source "../../storage/framework/views/*.php";
+@source "../**/*.blade.php";
+@source "../**/*.js";
+
+/* 2. Move your Theme settings here */
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /* Add any other colors or spacing from your old config file here */
+    /* Example: --color-brand: #6366F1; */
+}
+
+/* 3. Plugins are imported like this in v4 */
+@plugin "@tailwindcss/typography";
+@plugin "@tailwindcss/forms";
