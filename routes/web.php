@@ -21,7 +21,9 @@ use App\Http\Controllers\TestimonyController;
 |--------------------------------------------------------------------------
 */
 Route::get('/', fn() => view('welcome'))->name('home');
-Route::get('/about', fn() => view('about'))->name('about'); // ADDED ABOUT ROUTE
+Route::get('/about', function () {
+    return view('about'); // Ensure resources/views/about.blade.php exists
+})->name('about');
 Route::get('/find-center', [ServiceCenterController::class, 'index'])->name('centers.index');
 Route::get('/events', [EventController::class, 'index'])->name('events.index');
 Route::get('/live', [LiveStreamController::class, 'index'])->name('livestream.view');
