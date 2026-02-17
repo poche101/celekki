@@ -175,7 +175,7 @@
                 <div class="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center">
                     <i data-lucide="check" class="w-5 h-5 text-white"></i>
                 </div>
-                <p class="font-bold tracking-tight">Your story has been shared successfully!</p>
+                <p class="font-bold tracking-tight">Your story has been submitted for review!</p>
             </div>
         </div>
     </div>
@@ -237,18 +237,15 @@
                     const result = await response.json();
 
                     if (response.ok) {
-                        // Immediately update UI
-                        if (result.data.video_url) {
-                            this.videoTestimonies.unshift(result.data);
-                        } else {
-                            this.textTestimonies.unshift(result.data);
-                        }
+                        // Success: The data is now in the database.
+                        // We do NOT update videoTestimonies or textTestimonies here.
+                        // This prevents the new testimony from appearing on the page immediately.
 
                         // Close and Reset
                         this.modalOpen = false;
                         this.form = { name: '', group: '', content: '', video_url: '' };
 
-                        // Toast Notification
+                        // Toast Notification (Updated message to indicate review process)
                         this.showToast = true;
                         this.refreshIcons();
                         setTimeout(() => this.showToast = false, 4000);

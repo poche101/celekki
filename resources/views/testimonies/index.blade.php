@@ -10,7 +10,7 @@
             <div class="bg-white/20 p-1 rounded-full">
                 <i data-lucide="check-circle-2" class="w-5 h-5"></i>
             </div>
-            <span class="font-bold">Testimony submitted successfully!</span>
+            <span class="font-bold">Testimony submitted for review!</span>
         </div>
 
         <button @click="openModal()"
@@ -83,9 +83,9 @@
                                         </div>
                                     </button>
 
-                                    <div class="absolute top-4 left-4">
-                                        <div class="px-4 py-2 bg-indigo-600 border border-indigo-400 rounded-full shadow-lg">
-                                            <span class="text-[10px] font-black text-white uppercase tracking-widest" x-text="video.group"></span>
+                                    <div class="absolute top-3 left-3">
+                                        <div class="px-2.5 py-1 bg-indigo-600/90 backdrop-blur-sm border border-indigo-400/50 rounded-lg shadow-lg">
+                                            <span class="text-[9px] font-black text-white uppercase tracking-wider" x-text="video.group"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -251,7 +251,7 @@
                         <button type="submit" :disabled="loading"
                             class="w-full group bg-indigo-600 hover:bg-indigo-700 text-white py-6 rounded-[1.5rem] font-black text-lg transition-all shadow-xl shadow-indigo-100 flex items-center justify-center gap-3">
                             <i data-lucide="send" class="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
-                            <span x-text="loading ? 'Processing...' : 'Publish Testimony'"></span>
+                            <span x-text="loading ? 'Processing...' : 'Submit Testimony for Review'"></span>
                         </button>
                     </form>
                 </div>
@@ -273,7 +273,6 @@
                     video_url: ''
                 },
 
-                // Configuration for specific posters
                 posters: {
                     'Kemi': '/images/kemi.png',
                     'Precious': '/images/precious.png',
@@ -316,20 +315,14 @@
                     return (match && match[2].length === 11) ? match[2] : '';
                 },
 
-                // Logic to determine which image to show
                 getPoster(video) {
-                    // 1. Check if name exists in our poster map (Partial match support)
                     for (const key in this.posters) {
                         if (video.name.toLowerCase().includes(key.toLowerCase())) {
                             return this.posters[key];
                         }
                     }
-
-                    // 2. Fallback to YouTube Thumbnail
                     const ytId = this.getYouTubeID(video.video_url);
                     if (ytId) return `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
-
-                    // 3. Final Fallback
                     return '/images/video-placeholder.jpg';
                 },
 
@@ -351,16 +344,11 @@
                         const result = await response.json();
 
                         if (response.ok) {
-                            if (result.data.video_url) {
-                                this.videoTestimonies.unshift(result.data);
-                            } else {
-                                this.textTestimonies.unshift(result.data);
-                            }
                             this.modalOpen = false;
                             this.form = { name: '', group: '', content: '', video_url: '' };
                             this.showToast = true;
                             this.refreshIcons();
-                            setTimeout(() => this.showToast = false, 4000);
+                            setTimeout(() => this.showToast = false, 5000);
                         } else {
                             alert(result.message || 'Validation failed.');
                         }

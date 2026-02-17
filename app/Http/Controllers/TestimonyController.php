@@ -40,12 +40,13 @@ class TestimonyController extends Controller
      */
     public function adminIndex(Request $request)
     {
-        $search = $request->input('search');
+        $search = $request->input('testimony_search'); // Match the 'name' attribute in your search input
 
         $query = Testimony::query()
             ->when($search, function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('group', 'like', "%{$search}%");
+                  ->orWhere('group', 'like', "%{$search}%")
+                  ->orWhere('content', 'like', "%{$search}%");
             });
 
         $testimonies = $query->latest()->paginate(10)->withQueryString();
@@ -57,6 +58,31 @@ class TestimonyController extends Controller
         ];
 
         return view('admin.tabs.testimonies', compact('testimonies', 'stats', 'search'));
+    }
+
+    /**
+     * Update an existing testimony
+     */
+    public function update(Request $request, Testimony $testimony)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'group' => 'nullable|string|max:255',
+            'content' => 'required|string',
+            'video_url' => 'nullable|url',
+        ]);
+
+        $testimony->update($validated);
+
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Testimony updated successfully!',
+                'data' => $testimony
+            ]);
+        }
+
+        return back()->with('success', 'Testimony updated successfully!');
     }
 
     /**
@@ -120,7 +146,6 @@ class TestimonyController extends Controller
 
     /**
      * Store new testimony (Submission)
-     * UPDATED: Returns JSON to support AJAX/Fetch calls from the frontend
      */
     public function store(Request $request)
     {
@@ -132,12 +157,11 @@ class TestimonyController extends Controller
                 'video_url' => 'nullable|url',
             ]);
 
-            // Default to approved for immediate visibility, or false for moderation
-            $validated['is_approved'] = true;
+            // Set moderation status - default to false if you want to approve before showing
+            $validated['is_approved'] = false;
 
             $testimony = Testimony::create($validated);
 
-            // Check if request expects JSON (like your Alpine.js fetch call)
             if ($request->expectsJson() || $request->ajax()) {
                 return response()->json([
                     'status' => 'success',

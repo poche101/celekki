@@ -1,4 +1,16 @@
-<div class="p-6 bg-white rounded-2xl shadow-sm border border-gray-100">
+<div class="p-6 bg-white rounded-2xl shadow-sm border border-gray-100"
+    x-data="{
+        openDeleteModal: false,
+        openEditModal: false,
+        deleteUrl: '',
+        editUrl: '',
+        editData: {
+            name: '',
+            group: '',
+            content: ''
+        }
+    }">
+
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
             <h2 class="text-2xl font-bold text-gray-800 tracking-tight">User Testimonies</h2>
@@ -98,18 +110,29 @@
                     </td>
                     <td class="py-5 text-right">
                         <div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button type="button"
+                                @click="
+                                    editUrl = '{{ route('admin.testimonies.update', $item->id) }}';
+                                    editData.name = '{{ addslashes($item->name) }}';
+                                    editData.group = '{{ addslashes($item->group) }}';
+                                    editData.content = '{{ addslashes($item->content) }}';
+                                    openEditModal = true;
+                                "
+                                class="p-2 text-gray-400 hover:text-indigo-600 hover:bg-white rounded-lg border border-transparent hover:border-gray-100 shadow-none hover:shadow-sm">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                            </button>
+
                             @if($item->video_url)
                                 <a href="{{ $item->video_url }}" target="_blank" class="p-2 text-gray-400 hover:text-indigo-600 hover:bg-white rounded-lg border border-transparent hover:border-gray-100 shadow-none hover:shadow-sm">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                                 </a>
                             @endif
 
-                            <form action="{{ route('admin.testimonies.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Delete this testimony forever?')">
-                                @csrf @method('DELETE')
-                                <button class="p-2 text-gray-400 hover:text-red-600 hover:bg-white rounded-lg border border-transparent hover:border-gray-100 shadow-none hover:shadow-sm">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                </button>
-                            </form>
+                            <button type="button"
+                                @click="deleteUrl = '{{ route('admin.testimonies.destroy', $item->id) }}'; openDeleteModal = true"
+                                class="p-2 text-gray-400 hover:text-red-600 hover:bg-white rounded-lg border border-transparent hover:border-gray-100 shadow-none hover:shadow-sm">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            </button>
                         </div>
                     </td>
                 </tr>
@@ -141,11 +164,124 @@
             </div>
         </div>
     </div>
+
+    <div x-show="openEditModal"
+         class="fixed inset-0 z-[99] flex items-center justify-center overflow-y-auto"
+         x-cloak>
+        <div x-show="openEditModal"
+             x-transition:enter="ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             @click="openEditModal = false"
+             class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm"></div>
+
+        <div x-show="openEditModal"
+             x-transition:enter="ease-out duration-300"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="ease-in duration-200"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-95"
+             class="relative bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 m-4 overflow-hidden">
+
+            <div class="mb-6">
+                <h3 class="text-xl font-bold text-gray-900">Edit Testimony</h3>
+                <p class="text-sm text-gray-500 mt-1">Modify the content before it appears on the public page.</p>
+            </div>
+
+            <form :action="editUrl" method="POST" class="space-y-4">
+                @csrf
+                @method('PUT')
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Author Name</label>
+                    <input type="text" name="name" x-model="editData.name" required
+                        class="block w-full px-4 py-2 border border-gray-200 rounded-xl bg-gray-50 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:bg-white transition-all sm:text-sm">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Group / Church</label>
+                    <input type="text" name="group" x-model="editData.group"
+                        class="block w-full px-4 py-2 border border-gray-200 rounded-xl bg-gray-50 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:bg-white transition-all sm:text-sm">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Testimony Content</label>
+                    <textarea name="content" x-model="editData.content" rows="6" required
+                        class="block w-full px-4 py-2 border border-gray-200 rounded-xl bg-gray-50 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:bg-white transition-all sm:text-sm resize-none"></textarea>
+                </div>
+
+                <div class="flex gap-3 pt-2">
+                    <button type="button" @click="openEditModal = false"
+                            class="flex-1 px-4 py-2.5 border border-gray-200 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-all">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                            class="flex-1 px-4 py-2.5 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 shadow-sm shadow-indigo-200 transition-all">
+                        Update Record
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div x-show="openDeleteModal"
+         class="fixed inset-0 z-[99] flex items-center justify-center overflow-y-auto"
+         x-cloak>
+        <div x-show="openDeleteModal"
+             x-transition:enter="ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             @click="openDeleteModal = false"
+             class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm"></div>
+
+        <div x-show="openDeleteModal"
+             x-transition:enter="ease-out duration-300"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="ease-in duration-200"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-95"
+             class="relative bg-white rounded-2xl shadow-xl w-full max-w-md p-6 m-4 overflow-hidden">
+
+            <div class="flex items-center justify-center w-12 h-12 mx-auto bg-red-50 rounded-full mb-4">
+                <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+            </div>
+
+            <div class="text-center mb-6">
+                <h3 class="text-lg font-bold text-gray-900">Confirm Delete</h3>
+                <p class="text-sm text-gray-500 mt-2">Are you sure you want to delete this testimony? This action cannot be undone.</p>
+            </div>
+
+            <div class="flex gap-3">
+                <button @click="openDeleteModal = false"
+                        class="flex-1 px-4 py-2.5 border border-gray-200 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-all">
+                    Cancel
+                </button>
+                <form :action="deleteUrl" method="POST" class="flex-1">
+                    @csrf @method('DELETE')
+                    <button type="submit"
+                            class="w-full px-4 py-2.5 bg-red-600 text-white font-semibold rounded-xl hover:bg-red-700 shadow-sm shadow-red-200 transition-all">
+                        Delete Forever
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 <style>
-    /* Styling to make default Laravel tailwind pagination look consistent with your UI */
-    .admin-pagination nav div:first-child { display: none; } /* Hide the 'Showing X to Y' repeat */
+    [x-cloak] { display: none !important; }
+
+    .admin-pagination nav div:first-child { display: none; }
     .admin-pagination nav span[aria-current="page"] span {
         @apply bg-indigo-600 text-white border-indigo-600 rounded-lg mx-1;
     }

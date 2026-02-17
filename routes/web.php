@@ -30,7 +30,7 @@ Route::post('/contact/submit', [ContactController::class, 'store'])->name('conta
 
 // TESTIMONIES SYSTEM
 Route::get('/testimonies', [TestimonyController::class, 'index'])->name('testimonies.index');
-// Public Submission (Renamed to .store to match your JS fetch call)
+// Public Submission
 Route::post('/testimonies/store', [TestimonyController::class, 'store'])->name('testimonies.store');
 
 /*
@@ -41,7 +41,7 @@ Route::post('/testimonies/store', [TestimonyController::class, 'store'])->name('
 Route::middleware('guest')->group(function () {
     // Member Auth
     Route::get('/login', [MemberLoginController::class, 'show'])->name('login');
-    Route::post('/login', [MemberLoginController::class, 'authenticate']); // Fixed here
+    Route::post('/login', [MemberLoginController::class, 'authenticate']);
     Route::get('/register', [RegisterController::class, 'show'])->name('register');
     Route::post('/register', [RegisterController::class, 'store']);
 
@@ -101,5 +101,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/testimonies', [TestimonyController::class, 'adminIndex'])->name('testimonies.index');
         Route::patch('/testimonies/{testimony}/toggle', [TestimonyController::class, 'toggleApproval'])->name('testimonies.toggle');
         Route::delete('/testimonies/{testimony}', [TestimonyController::class, 'destroy'])->name('testimonies.destroy');
+
+        // NEW: Testimony Update Route
+        Route::put('/testimonies/{testimony}', [TestimonyController::class, 'update'])->name('testimonies.update');
     });
 });
