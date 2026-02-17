@@ -21,7 +21,7 @@ use App\Http\Controllers\TestimonyController;
 |--------------------------------------------------------------------------
 */
 Route::get('/', fn() => view('welcome'))->name('home');
-Route::get('/about', fn() => view('about'))->name('about'); // ADDED ABOUT ROUTE
+Route::get('/about', fn() => view('about'))->name('about');
 Route::get('/find-center', [ServiceCenterController::class, 'index'])->name('centers.index');
 Route::get('/events', [EventController::class, 'index'])->name('events.index');
 Route::get('/live', [LiveStreamController::class, 'index'])->name('livestream.view');
@@ -31,7 +31,6 @@ Route::post('/contact/submit', [ContactController::class, 'store'])->name('conta
 
 // TESTIMONIES SYSTEM
 Route::get('/testimonies', [TestimonyController::class, 'index'])->name('testimonies.index');
-// Public Submission
 Route::post('/testimonies/store', [TestimonyController::class, 'store'])->name('testimonies.store');
 
 /*
@@ -60,7 +59,6 @@ Route::middleware('guest')->group(function () {
 */
 Route::prefix('api')->group(function() {
     Route::prefix('comments')->group(function () {
-        // FIXED: Removed the stray character before Route::get
         Route::get('/stream/{streamId}', [LiveCommentController::class, 'index'])->name('api.comments.index');
         Route::post('/', [LiveCommentController::class, 'store']);
         Route::put('/{id}', [LiveCommentController::class, 'update']);
@@ -103,8 +101,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/testimonies', [TestimonyController::class, 'adminIndex'])->name('testimonies.index');
         Route::patch('/testimonies/{testimony}/toggle', [TestimonyController::class, 'toggleApproval'])->name('testimonies.toggle');
         Route::delete('/testimonies/{testimony}', [TestimonyController::class, 'destroy'])->name('testimonies.destroy');
-
-        // NEW: Testimony Update Route
         Route::put('/testimonies/{testimony}', [TestimonyController::class, 'update'])->name('testimonies.update');
     });
 });
