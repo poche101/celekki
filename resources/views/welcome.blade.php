@@ -64,16 +64,15 @@
         }
     </style>
 
-<header class="relative h-[80vh] min-h-[600px] flex items-center justify-center overflow-hidden">
-    <div class="absolute inset-0 z-0">
+<header class="relative w-full h-auto lg:h-[80vh] lg:min-h-[600px] flex items-center justify-center overflow-hidden bg-white">
+    <div class="relative lg:absolute lg:inset-0 z-0 w-full">
         <img src="/images/hero.png"
-             class="w-full h-full object-cover"
+             class="w-full h-auto lg:h-full object-contain lg:object-cover"
              alt="Church Sanctuary">
 
-        <div class="absolute inset-0 bg-gradient-to-r from-blue-900/10 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-900/10 to-transparent pointer-events-none"></div>
     </div>
-
-    </header>
+</header>
 
     <section class="py-24 bg-slate-50">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
