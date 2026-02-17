@@ -5,16 +5,16 @@
             x-transition:enter-start="translate-y-10 opacity-0" x-transition:enter-end="translate-y-0 opacity-100"
             x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
-            class="fixed bottom-24 right-10 z-[110] flex items-center gap-3 bg-emerald-500 text-white px-6 py-4 rounded-2xl shadow-2xl shadow-emerald-200"
+            class="fixed bottom-24 right-4 left-4 md:left-auto md:right-10 z-[110] flex items-center gap-3 bg-emerald-500 text-white px-6 py-4 rounded-2xl shadow-2xl shadow-emerald-200"
             x-cloak>
             <div class="bg-white/20 p-1 rounded-full">
                 <i data-lucide="check-circle-2" class="w-5 h-5"></i>
             </div>
-            <span class="font-bold">Testimony submitted for review!</span>
+            <span class="font-bold">Testimony submitted!</span>
         </div>
 
         <button @click="openModal()"
-            class="fixed bottom-10 right-10 z-[90] group flex items-center gap-3 bg-slate-900 hover:bg-indigo-600 text-white pl-4 pr-6 py-4 rounded-2xl shadow-2xl shadow-indigo-200 transition-all duration-500 transform hover:-translate-y-2 active:scale-95">
+            class="fixed bottom-10 right-6 md:right-10 z-[90] group flex items-center gap-3 bg-slate-900 hover:bg-indigo-600 text-white pl-4 pr-6 py-4 rounded-2xl shadow-2xl shadow-indigo-200 transition-all duration-500 transform hover:-translate-y-2 active:scale-95">
             <div
                 class="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center group-hover:bg-white group-hover:rotate-12 transition-all duration-500">
                 <i data-lucide="sparkles" class="w-4 h-4 text-white group-hover:text-indigo-600"></i>
@@ -182,23 +182,23 @@
             </section>
         </main>
 
-        <div x-show="modalOpen" class="fixed inset-0 z-[100] flex items-center justify-center p-4" x-cloak>
+        <div x-show="modalOpen" class="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6" x-cloak>
             <div x-show="modalOpen" x-transition.opacity @click="modalOpen = false"
                 class="absolute inset-0 bg-slate-900/80 backdrop-blur-xl"></div>
 
             <div x-show="modalOpen" x-transition:enter="transition ease-out duration-500 transform"
                 x-transition:enter-start="opacity-0 translate-y-20 scale-95"
                 x-transition:enter-end="opacity-100 translate-y-0 scale-100"
-                class="bg-white w-full max-w-2xl rounded-[3rem] shadow-2xl relative z-10 overflow-hidden">
+                class="bg-white w-full max-w-2xl rounded-[2.5rem] md:rounded-[3rem] shadow-2xl relative z-10 overflow-hidden max-h-[90vh] flex flex-col">
 
-                <div class="p-12">
-                    <div class="flex justify-between items-start mb-10">
+                <div class="p-8 md:p-12 overflow-y-auto custom-scrollbar">
+                    <div class="flex justify-between items-start mb-8 md:mb-10">
                         <div>
                             <div class="flex items-center gap-2 text-indigo-600 mb-2">
                                 <i data-lucide="heart" class="w-5 h-5 fill-current"></i>
                                 <span class="font-black text-xs uppercase tracking-widest">Contribute</span>
                             </div>
-                            <h3 class="text-4xl font-black text-slate-900 tracking-tighter">Tell Your Story</h3>
+                            <h3 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tighter">Tell Your Story</h3>
                         </div>
                         <button @click="modalOpen = false"
                             class="p-3 bg-slate-50 hover:bg-red-50 hover:text-red-500 rounded-2xl transition-all text-slate-400">
@@ -206,30 +206,30 @@
                         </button>
                     </div>
 
-                    <form @submit.prevent="submitTestimonyUI" class="space-y-8">
+                    <form @submit.prevent="submitTestimonyUI" class="space-y-6 md:space-y-8">
                         <template x-if="getYouTubeID(form.video_url)">
-                            <div class="relative rounded-[2rem] overflow-hidden group border-4 border-indigo-50">
+                            <div class="relative rounded-[1.5rem] md:rounded-[2rem] overflow-hidden group border-4 border-indigo-50">
                                 <img :src="`https://img.youtube.com/vi/${getYouTubeID(form.video_url)}/maxresdefault.jpg`"
                                     class="w-full aspect-video object-cover">
                                 <div class="absolute inset-0 bg-indigo-600/20 flex items-center justify-center">
                                     <div class="bg-white/90 backdrop-blur px-4 py-2 rounded-full flex items-center gap-2">
                                         <i data-lucide="video" class="w-4 h-4 text-indigo-600"></i>
-                                        <span class="text-[10px] font-black uppercase text-indigo-600 tracking-widest">Video Preview Detected</span>
+                                        <span class="text-[10px] font-black uppercase text-indigo-600 tracking-widest">Preview Detected</span>
                                     </div>
                                 </div>
                             </div>
                         </template>
 
-                        <div class="grid grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-3">
                                 <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Full Name</label>
                                 <input type="text" x-model="form.name" required
-                                    class="w-full bg-slate-50 border-2 border-transparent focus:border-indigo-100 focus:bg-white rounded-[1.5rem] px-6 py-4 focus:ring-0 transition-all">
+                                    class="w-full bg-slate-50 border-2 border-transparent focus:border-indigo-100 focus:bg-white rounded-[1.2rem] md:rounded-[1.5rem] px-6 py-4 focus:ring-0 transition-all">
                             </div>
                             <div class="space-y-3">
                                 <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Group</label>
                                 <input type="text" x-model="form.group" required
-                                    class="w-full bg-slate-50 border-2 border-transparent focus:border-indigo-100 focus:bg-white rounded-[1.5rem] px-6 py-4 focus:ring-0 transition-all">
+                                    class="w-full bg-slate-50 border-2 border-transparent focus:border-indigo-100 focus:bg-white rounded-[1.2rem] md:rounded-[1.5rem] px-6 py-4 focus:ring-0 transition-all">
                             </div>
                         </div>
 
@@ -238,26 +238,32 @@
                             <div class="relative">
                                 <i data-lucide="link" class="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300"></i>
                                 <input type="url" x-model="form.video_url" placeholder="https://youtube.com/..."
-                                    class="w-full bg-slate-50 border-2 border-transparent focus:border-indigo-100 focus:bg-white rounded-[1.5rem] pl-14 pr-6 py-4 focus:ring-0 transition-all">
+                                    class="w-full bg-slate-50 border-2 border-transparent focus:border-indigo-100 focus:bg-white rounded-[1.2rem] md:rounded-[1.5rem] pl-14 pr-6 py-4 focus:ring-0 transition-all">
                             </div>
                         </div>
 
                         <div class="space-y-3">
                             <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Your Story</label>
                             <textarea x-model="form.content" required rows="4"
-                                class="w-full bg-slate-50 border-2 border-transparent focus:border-indigo-100 focus:bg-white rounded-[2rem] px-6 py-5 focus:ring-0 transition-all resize-none"></textarea>
+                                class="w-full bg-slate-50 border-2 border-transparent focus:border-indigo-100 focus:bg-white rounded-[1.5rem] md:rounded-[2rem] px-6 py-5 focus:ring-0 transition-all resize-none"></textarea>
                         </div>
 
                         <button type="submit" :disabled="loading"
-                            class="w-full group bg-indigo-600 hover:bg-indigo-700 text-white py-6 rounded-[1.5rem] font-black text-lg transition-all shadow-xl shadow-indigo-100 flex items-center justify-center gap-3">
+                            class="w-full group bg-indigo-600 hover:bg-indigo-700 text-white py-5 md:py-6 rounded-[1.2rem] md:rounded-[1.5rem] font-black text-base md:text-lg transition-all shadow-xl shadow-indigo-100 flex items-center justify-center gap-3">
                             <i data-lucide="send" class="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
-                            <span x-text="loading ? 'Processing...' : 'Submit Testimony for Review'"></span>
+                            <span x-text="loading ? 'Processing...' : 'Submit Testimony'"></span>
                         </button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
+    <style>
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+    </style>
 
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
