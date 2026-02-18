@@ -208,7 +208,7 @@
                                 class="w-full h-full object-cover"
                                 poster="/images/sons.png"
                                 controls>
-                                <source src="https://8v4o6w73awqp-hls-push.5centscdn.com/EPISODE%205%20Repackaged.mp4/playlist.m3u8" type="application/x-mpegURL">
+                                <source src="https://drive.google.com/file/d/16WMuC-W4Qc2ZU3RWukys1EzIhOPZ-zY5/view" type="application/x-mpegURL">
                             </video>
                         </div>
 

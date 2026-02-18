@@ -67,6 +67,9 @@ Route::prefix('api')->group(function() {
     });
 
     Route::post('/live/attendance', [LiveAttendanceController::class, 'storeAttendance']);
+
+    // Public Video Route for H-Life sync
+    Route::get('/videos', [HLifeController::class, 'index']);
 });
 
 /*
@@ -96,14 +99,19 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/blog', [MembersController::class, 'index'])->name('blog');
         Route::get('/live-stream', [MembersController::class, 'index'])->name('live-stream.view');
 
-        // VIDEO MANAGEMENT API ROUTES (UPDATED)
+        // ADMIN API MANAGEMENT
         Route::prefix('api')->group(function () {
+            // Video Management
             Route::get('/videos', [HLifeController::class, 'index'])->name('videos.index');
             Route::post('/videos', [HLifeController::class, 'store'])->name('videos.store');
-
-            // This route handles Update (POST/PUT/PATCH) and Delete for a specific video ID
             Route::match(['post', 'put', 'patch'], '/videos/{id}', [HLifeController::class, 'update'])->name('videos.update');
             Route::delete('/videos/{id}', [HLifeController::class, 'destroy'])->name('videos.destroy');
+
+            // Event Management (Added missing routes)
+            Route::get('/events', [EventController::class, 'index'])->name('events.index');
+            Route::post('/events', [EventController::class, 'store'])->name('events.store');
+            Route::match(['post', 'put', 'patch'], '/events/{id}', [EventController::class, 'update'])->name('events.update');
+            Route::delete('/events/{id}', [EventController::class, 'destroy'])->name('events.destroy');
         });
 
         // Admin Testimony Management

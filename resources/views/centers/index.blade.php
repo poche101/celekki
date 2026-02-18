@@ -8,7 +8,7 @@
         .center-card:hover { transform: scale(1.02); shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
         #map { filter: saturate(1.2) contrast(1.05); min-height: 400px; }
         .custom-popup .leaflet-popup-content-wrapper { border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
-        
+
         /* Mobile height adjustments */
         @media (max-width: 1024px) {
             .main-container { height: auto !important; flex-direction: column-reverse !important; }
@@ -91,7 +91,7 @@
         const map = L.map('map', {
             zoomControl: false,
             // Constraints for Lagos
-            maxBounds: [[6.2, 3.1], [6.8, 3.9]] 
+            maxBounds: [[6.2, 3.1], [6.8, 3.9]]
         }).setView([6.45, 3.47], 12);
 
         L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
@@ -180,7 +180,7 @@
         function resetToListView() {
             const sidebar = document.getElementById('sidebarContent');
             sidebar.innerHTML = originalSidebarHTML;
-            
+
             attachSearchListener();
 
             // Reset Map View
