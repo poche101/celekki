@@ -96,6 +96,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/blog', [MembersController::class, 'index'])->name('blog');
         Route::get('/live-stream', [MembersController::class, 'index'])->name('live-stream.view');
 
+        // Added Video Management API Routes
+        Route::prefix('api')->group(function () {
+            Route::get('/videos', [HLifeController::class, 'index'])->name('videos.index');
+            Route::post('/videos', [HLifeController::class, 'store'])->name('videos.store');
+            Route::delete('/videos/{id}', [HLifeController::class, 'destroy'])->name('videos.destroy');
+        });
+
         // Admin Testimony Management
         Route::get('/testimonies/export', [TestimonyController::class, 'exportCsv'])->name('testimonies.export');
         Route::get('/testimonies', [TestimonyController::class, 'adminIndex'])->name('testimonies.index');
