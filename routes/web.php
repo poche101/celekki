@@ -96,10 +96,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/blog', [MembersController::class, 'index'])->name('blog');
         Route::get('/live-stream', [MembersController::class, 'index'])->name('live-stream.view');
 
-        // Added Video Management API Routes
+        // VIDEO MANAGEMENT API ROUTES (UPDATED)
         Route::prefix('api')->group(function () {
             Route::get('/videos', [HLifeController::class, 'index'])->name('videos.index');
             Route::post('/videos', [HLifeController::class, 'store'])->name('videos.store');
+
+            // This route handles Update (POST/PUT/PATCH) and Delete for a specific video ID
+            Route::match(['post', 'put', 'patch'], '/videos/{id}', [HLifeController::class, 'update'])->name('videos.update');
             Route::delete('/videos/{id}', [HLifeController::class, 'destroy'])->name('videos.destroy');
         });
 
