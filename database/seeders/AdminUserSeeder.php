@@ -14,7 +14,7 @@ class AdminUserSeeder extends Seeder
             ['email' => 'admin@celekki.org'],
             [
                 'name' => 'Lekki Admin',
-                'password' => Hash::make('password2026#'), // Change this after login
+                'password' => Hash::make('admin12345'), // Change this after login
                 'email_verified_at' => now(),
             ]
         );
