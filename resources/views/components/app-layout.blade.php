@@ -237,7 +237,7 @@
                                     <i data-lucide="map-pin" class="w-5 h-5"></i>
                                 </div>
                                 <div>
-                                    <p class="text-[17px] font-bold text-slate-900">Service Centers</p>
+                                    <p class="text-[17px] font-bold text-slate-900">Mid-WeekService Centers</p>
                                     <p class="text-xs text-slate-500">Find a center near you</p>
                                 </div>
                             </a>

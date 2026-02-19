@@ -32,7 +32,7 @@
                                 </div>
                                 <div>
                                     <h1 class="text-xl md:text-2xl font-black text-slate-900 tracking-tight leading-none">Locator</h1>
-                                    <p class="text-[9px] md:text-[10px] font-bold text-indigo-600 uppercase tracking-[0.2em] mt-1">Midweek Centers</p>
+                                    <p class="text-[9px] md:text-[10px] font-bold text-indigo-600 uppercase tracking-[0.2em] mt-1">Midweek Service Centers</p>
                                 </div>
                             </div>
                         </div>
