@@ -53,9 +53,9 @@ class ProfileController extends Controller
             'name'   => 'required|string|min:3|max:255',
             'email'  => 'required|email|unique:users,email,' . $user->id,
             'phone'  => 'nullable|string|max:20',
-            'group'  => 'nullable|string|max:100', 
-            'church' => 'nullable|string|max:100', 
-            'cell'   => 'nullable|string|max:100', 
+            'group'  => 'nullable|string|max:100',
+            'church' => 'nullable|string|max:100',
+            'cell'   => 'nullable|string|max:100',
         ]);
 
         // Manually map the form inputs to the specific database columns in your migration
@@ -64,12 +64,13 @@ class ProfileController extends Controller
             'name'           => $validated['name'],
             'email'          => $validated['email'],
             'phone'          => $validated['phone'],
-            'church_group'   => $validated['group'],  
-            'central_church' => $validated['church'], 
-            'assigned_cell'  => $validated['cell'],   
+            'church_group'   => $validated['group'],
+            'central_church' => $validated['church'],
+            'assigned_cell'  => $validated['cell'],
         ]);
 
-        return redirect()->route('profile')->with('success', 'Profile updated successfully!');
+        return redirect()->route('profile.edit')->with('success', 'Profile updated successfully!');
+
     }
 
     /**
@@ -78,7 +79,7 @@ class ProfileController extends Controller
     public function updatePhoto(Request $request)
     {
         $request->validate([
-            'photo' => 'required|image|mimes:jpeg,png,jpg|max:1024', 
+            'photo' => 'required|image|mimes:jpeg,png,jpg|max:1024',
         ]);
 
         /** @var \App\Models\User $user */
@@ -91,7 +92,7 @@ class ProfileController extends Controller
             }
 
             $path = $request->file('photo')->store('profile-photos', 'public');
-            
+
             // Update the correct column name: profile_photo_path
             $user->update(['profile_photo_path' => $path]);
         }
@@ -102,17 +103,19 @@ class ProfileController extends Controller
     /**
      * Toggle the Push Notification preference.
      */
-    public function toggleNotifications()
-    {
-        /** @var \App\Models\User $user */
-        $user = Auth::user();
+   public function toggleNotifications(Request $request)
+{
+    $user = auth()->user();
 
-        $user->update([
-            'notifications_enabled' => !$user->notifications_enabled
-        ]);
+    // Failsafe: if for some reason user is null
+    if (!$user) return back();
 
-        return back()->with('success', 'Notification settings updated.');
-    }
+    // Toggle the boolean value
+    $user->notifications_enabled = !$user->notifications_enabled;
+    $user->save();
+
+    return back()->with('success', 'Notification settings updated!');
+}
 
     /**
      * Delete the account and invalidate the session.

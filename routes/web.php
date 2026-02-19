@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
+// Imported the Admin-specific EventController with an alias
+use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\LiveCommentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -64,6 +66,7 @@ Route::prefix('api')->group(function() {
         Route::put('/{id}', [LiveCommentController::class, 'update']);
         Route::post('/{id}/reply', [LiveCommentController::class, 'reply']);
         Route::delete('/{id}', [LiveCommentController::class, 'destroy']);
+        Route::get('/public-events', [EventController::class, 'getPublicData'])->name('api.public-events');
     });
 
     Route::post('/live/attendance', [LiveAttendanceController::class, 'storeAttendance']);
@@ -86,12 +89,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/logout', [AdminLoginController::class, 'logout']);
 
     // Profile
+    // Profile
     Route::prefix('profile')->name('profile.')->group(function () {
-        Route::get('/', [ProfileController::class, 'edit'])->name('edit');
-        Route::post('/update', [ProfileController::class, 'update'])->name('update');
-        Route::post('/photo', [ProfileController::class, 'updatePhoto'])->name('photo');
-    });
+    Route::get('/', [ProfileController::class, 'edit'])->name('edit');
+    Route::post('/update', [ProfileController::class, 'update'])->name('update');
+    Route::post('/photo', [ProfileController::class, 'updatePhoto'])->name('photo');
+    Route::post('/notifications', [ProfileController::class, 'toggleNotifications'])->name('notifications');
 
+    // ADD THIS LINE BELOW:
+    Route::delete('/destroy', [ProfileController::class, 'destroy'])->name('destroy');
+});
     // --- ADMIN PANEL ---
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [MembersController::class, 'index'])->name('dashboard');
@@ -106,12 +113,17 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/videos', [HLifeController::class, 'store'])->name('videos.store');
             Route::match(['post', 'put', 'patch'], '/videos/{id}', [HLifeController::class, 'update'])->name('videos.update');
             Route::delete('/videos/{id}', [HLifeController::class, 'destroy'])->name('videos.destroy');
+            Route::get('/studio-data', [LiveAttendanceController::class, 'getStudioData'])->name('studio-data');
 
-            // Event Management (Added missing routes)
-            Route::get('/events', [EventController::class, 'index'])->name('events.index');
-            Route::post('/events', [EventController::class, 'store'])->name('events.store');
-            Route::match(['post', 'put', 'patch'], '/events/{id}', [EventController::class, 'update'])->name('events.update');
-            Route::delete('/events/{id}', [EventController::class, 'destroy'])->name('events.destroy');
+            // --- FIXED EVENT MANAGEMENT ROUTES ---
+            // These now point to the correct api methods in your AdminEventController
+            Route::get('/events', [AdminEventController::class, 'apiIndex'])->name('events.index');
+            Route::post('/events', [AdminEventController::class, 'apiSave'])->name('events.store');
+            Route::post('/events/{id}', [AdminEventController::class, 'apiSave'])->name('events.update'); // For multipart/form-data updates
+            Route::delete('/events/{id}', [AdminEventController::class, 'apiDestroy'])->name('events.destroy');
+
+            // This is for the Blade view itself
+            Route::get('/events-page', [AdminEventController::class, 'index'])->name('events.page');
         });
 
         // Admin Testimony Management

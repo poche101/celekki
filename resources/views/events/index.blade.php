@@ -230,28 +230,22 @@ function eventManager() {
             selectedEvent: null,
 
             async init() {
-                try {
-                    // Using the exact URL that worked in your browser
-                    const response = await fetch("/api/events-data");
-                    if (!response.ok) throw new Error('Failed to fetch');
+    try {
+        this.isLoading = true;
+        // Make sure this URL is accessible without a login if this is a public page
+        const response = await fetch("/api/events-data");
+        const data = await response.json();
 
-                    const data = await response.json();
+        console.log("Events received:", data); // Check your console for this!
 
-                    // Sanitize data: Ensure description isn't null so it doesn't break the UI
-                    this.events = data.map(event => ({
-                        ...event,
-                        description: event.description || 'No description provided for this event.',
-                        category: event.category || 'General'
-                    }));
-
-                } catch (e) {
-                    console.error("Fetch Error:", e);
-                } finally {
-                    this.isLoading = false;
-                    this.$nextTick(() => { this.refreshIcons(); });
-                }
-            },
-
+        this.events = data;
+    } catch (e) {
+        console.error("Fetch Error:", e);
+    } finally {
+        this.isLoading = false;
+        this.$nextTick(() => { this.refreshIcons(); });
+    }
+},
             get paginatedEvents() {
                 // Return events sorted by ID descending (Newest first)
                 return [...this.events]

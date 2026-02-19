@@ -14,64 +14,72 @@ class LiveAttendanceController extends Controller
     /**
      * Display the studio data: stream details, attendees, and metrics.
      */
-   public function getStudioData(Request $request)
-{
-    // 1. Get the latest stream
-    $stream = LiveStream::latest()->first();
+    public function getStudioData(Request $request)
+    {
+        // 1. Get the latest stream
+        $stream = LiveStream::latest()->first();
 
-    if (!$stream) {
-        return response()->json([
-            'message' => 'No stream record found.',
-            'attendees' => [],
-            'metrics' => ['total_attendees' => 0, 'unique_users' => 0]
-        ], 200); // Changed to 200 so the frontend doesn't crash on empty states
-    }
+        if (!$stream) {
+            return response()->json([
+                'message' => 'No stream record found.',
+                'attendees' => ['data' => [], 'last_page' => 1],
+                'metrics' => ['total_attendees' => 0, 'unique_users' => 0]
+            ], 200);
+        }
 
-    // 2. Build the query for attendees
-    $query = LiveAttendance::where('live_stream_id', $stream->id);
+        // 2. Build the query for attendees
+        $query = LiveAttendance::where('live_stream_id', $stream->id);
 
-    // 3. Handle live search filtering
-    if ($request->filled('search')) {
-        $search = $request->query('search');
-        $query->where(function($q) use ($search) {
-            $q->where('name', 'LIKE', "%{$search}%")
-              ->orWhere('phone', 'LIKE', "%{$search}%");
-        });
-    }
+        // 3. Handle live search filtering
+        if ($request->filled('search')) {
+            $search = $request->query('search');
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%")
+                  ->orWhere('phone', 'LIKE', "%{$search}%");
+            });
+        }
 
-    // 4. Fetch and format the list
-    $attendees = $query->orderBy('created_at', 'desc')
-        ->get()
-        ->map(fn($item) => [
+        // 4. Fetch with PAGINATION (to satisfy Alpine.js frontend)
+        $paginatedAttendees = $query->orderBy('created_at', 'desc')->paginate(10);
+
+        // 5. Transform the data for the UI
+        $formattedData = collect($paginatedAttendees->items())->map(fn($item) => [
             'id' => $item->id,
             'name' => $item->name,
             'phone' => $item->phone ?? 'N/A',
-            'status' => $item->status ?? 'offline',
+            'status' => strtolower($item->status ?? 'online'), // Ensure lowercase for CSS class matching
             'attended_at' => $item->created_at ? $item->created_at->diffForHumans() : 'Just now',
             'full_date' => $item->created_at ? $item->created_at->format('M d, Y H:i') : ''
         ]);
 
-    // 5. Optimized Metrics (Database level count is faster than Collection level)
-    $uniqueUsersCount = LiveAttendance::where('live_stream_id', $stream->id)
-        ->whereNotNull('user_id')
-        ->distinct('user_id')
-        ->count();
+        // 6. Optimized Metrics
+        $uniqueUsersCount = LiveAttendance::where('live_stream_id', $stream->id)
+            ->whereNotNull('user_id')
+            ->distinct('user_id')
+            ->count();
 
-    return response()->json([
-        'id' => $stream->id,
-        'title' => $stream->title,
-        'scheduled_date' => $stream->scheduled_date,
-        'scheduled_time' => $stream->scheduled_time,
-        'stream_link' => $stream->stream_link,
-        'is_live' => (bool)$stream->is_live,
-        'metrics' => [
-            'total_attendees' => $attendees->count(),
-            'unique_users' => $uniqueUsersCount,
-        ],
-        'attendees' => $attendees,
-        'comments' => $stream->comments ?? []
-    ]);
-}
+        return response()->json([
+            'id' => $stream->id,
+            'title' => $stream->title,
+            'scheduled_date' => $stream->scheduled_date,
+            'scheduled_time' => $stream->scheduled_time,
+            'stream_link' => $stream->stream_link,
+            'is_live' => (bool)$stream->is_live,
+            'metrics' => [
+                'total_attendees' => $paginatedAttendees->total(),
+                'unique_users' => $uniqueUsersCount,
+            ],
+            // This nested structure matches: data.attendees.data
+            'attendees' => [
+                'data' => $formattedData,
+                'last_page' => $paginatedAttendees->lastPage(),
+                'current_page' => $paginatedAttendees->currentPage(),
+                'total' => $paginatedAttendees->total(),
+            ],
+            'comments' => $stream->comments ?? []
+        ]);
+    }
+
     /**
      * Update broadcast scheduling details.
      */
@@ -84,7 +92,6 @@ class LiveAttendanceController extends Controller
             'stream_link' => 'required|url',
         ]);
 
-        // Using updateOrCreate to ensure we always have a current stream record
         $stream = LiveStream::updateOrCreate(
             ['id' => $request->id ?? (LiveStream::latest()->first()->id ?? null)],
             $validated
@@ -120,57 +127,52 @@ class LiveAttendanceController extends Controller
     /**
      * Record a new attendance entry.
      */
-   public function storeAttendance(Request $request)
-{
-    $stream = LiveStream::latest()->first();
+    public function storeAttendance(Request $request)
+    {
+        $stream = LiveStream::latest()->first();
 
-    if (!$stream) {
-        return response()->json(['message' => 'No active service found.'], 422);
-    }
+        if (!$stream) {
+            return response()->json(['message' => 'No active service found.'], 422);
+        }
 
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'phone' => 'required|string|max:50',
-    ]);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:50',
+        ]);
 
-    // Check for existing attendance in the last 2 hours
-    $existing = LiveAttendance::where('live_stream_id', $stream->id)
-        ->where(function($query) use ($request) {
-            $query->where('phone', $request->phone);
-            if (Auth::check()) {
-                $query->orWhere('user_id', Auth::id());
-            }
-        })
-        ->where('created_at', '>', now()->subHours(2))
-        ->first();
+        $existing = LiveAttendance::where('live_stream_id', $stream->id)
+            ->where(function($query) use ($request) {
+                $query->where('phone', $request->phone);
+                if (Auth::check()) {
+                    $query->orWhere('user_id', Auth::id());
+                }
+            })
+            ->where('created_at', '>', now()->subHours(2))
+            ->first();
 
-    if ($existing) {
-        // IMPORTANT: Set the session even for returning users
-        // so they can pass the middleware check.
+        if ($existing) {
+            session(['live_access_granted' => true]);
+            return response()->json([
+                'message' => 'Welcome back!',
+                'attendance' => $existing,
+                'redirect' => true
+            ]);
+        }
+
+        $attendance = LiveAttendance::create([
+            'live_stream_id' => $stream->id,
+            'user_id' => Auth::id(),
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'status' => 'Online',
+            'attended_at' => now(),
+        ]);
+
         session(['live_access_granted' => true]);
 
         return response()->json([
-            'message' => 'Welcome back!',
-            'attendance' => $existing,
-            'redirect' => true
+            'message' => 'Access Granted',
+            'attendance' => $attendance
         ]);
     }
-
-    $attendance = LiveAttendance::create([
-        'live_stream_id' => $stream->id,
-        'user_id' => Auth::id(),
-        'name' => $request->name,
-        'phone' => $request->phone,
-        'status' => 'Online',
-        'attended_at' => now(),
-    ]);
-
-    // IMPORTANT: Set the session for new attendees
-    session(['live_access_granted' => true]);
-
-    return response()->json([
-        'message' => 'Access Granted',
-        'attendance' => $attendance
-    ]);
-}
 }

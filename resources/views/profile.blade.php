@@ -29,7 +29,7 @@
     </div>
 
     <div class="min-h-screen bg-[#F8FAFC] font-sans text-slate-900 pb-12" x-data="{ showEditModal: false, showDeleteModal: false }">
-        
+
         <div class="relative h-64 md:h-80 w-full overflow-hidden">
             <div class="absolute inset-0 bg-gradient-to-r from-[#0A192F] via-[#0D47A1] to-[#0A192F]"></div>
             <div class="absolute inset-0 opacity-10" style="background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');"></div>
@@ -49,7 +49,7 @@
                                         <img src="https://ui-avatars.com/api/?name={{ urlencode($user['name']) }}&background=0D47A1&color=fff&size=256" class="w-full h-full object-cover">
                                     @endif
                                 </div>
-                                
+
                                 <form action="{{ route('profile.photo') }}" method="POST" enctype="multipart/form-data" id="photoForm">
                                     @csrf
                                     <label class="absolute bottom-1 right-1 bg-orange-500 hover:bg-orange-600 p-3 rounded-full cursor-pointer shadow-lg transition-all text-white">
@@ -68,13 +68,25 @@
 
                       <div class="bg-slate-50 p-8 border-t border-slate-100 text-center">
                         <p class="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4">Membership Token</p>
-                        
-                        <div class="inline-block p-4 bg-white rounded-2xl shadow-sm border border-slate-100">
-                            {{-- Force the value to a string to ensure the QR code reads it correctly --}}
-                            {!! QrCode::size(140)
-                                ->color(13, 71, 161)
-                                ->generate(strval(Auth::user()->membership_code)) 
-                            !!}
+
+                       <div class="inline-block p-4 bg-white rounded-2xl shadow-sm border border-slate-100">
+                            @php
+                                // We prioritize member_id because your controller generates it automatically
+                                $qrValue = Auth::user()->member_id ?? Auth::user()->membership_code;
+                            @endphp
+
+                            @if(!empty($qrValue))
+                                {!! QrCode::size(140)
+                                    ->color(13, 71, 161)
+                                    ->generate(strval($qrValue))
+                                !!}
+                            @else
+                                <div class="w-[140px] h-[140px] flex items-center justify-center bg-slate-50 rounded-xl border-2 border-dashed border-slate-200">
+                                    <p class="text-[10px] text-slate-400 font-bold px-4 text-center uppercase tracking-tighter">
+                                        Generating Code...
+                                    </p>
+                                </div>
+                            @endif
                         </div>
 
                         <div class="mt-4">
@@ -199,12 +211,12 @@
             </div>
         </div>
 
-        <div x-show="showEditModal" 
-             x-transition:enter="transition ease-out duration-300" 
-             x-transition:enter-start="opacity-0" 
+        <div x-show="showEditModal"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0"
              x-transition:enter-end="opacity-100"
              class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm" x-cloak>
-            
+
             <div class="bg-white w-full max-w-2xl rounded-[32px] p-8 shadow-2xl" @click.away="showEditModal = false">
                 <div class="flex justify-between items-center mb-8">
                     <div>

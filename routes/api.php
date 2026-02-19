@@ -61,7 +61,13 @@ Route::get('/events-data', [PublicEventController::class, 'getPublicData'])->nam
 
 // Admin Management
 Route::prefix('admin')->group(function () {
+    // This loads the actual HTML Page/Dashboard
     Route::get('/events', [EventController::class, 'index']);
+
+    // This provides the JSON data for your "apiIndex" function
+    // Notice the different URL: /admin/events-list
+    Route::get('/events-list', [EventController::class, 'apiIndex']);
+
     Route::post('/events', [EventController::class, 'store']);
     Route::put('/events/{event}', [EventController::class, 'update']);
     Route::delete('/events/{event}', [EventController::class, 'destroy']);

@@ -259,7 +259,7 @@
     [x-cloak] { display: none !important; }
 </style>
 
-<script>
+<<script>
 function eventManager() {
     return {
         events: [],
@@ -287,38 +287,40 @@ function eventManager() {
             setTimeout(() => this.toasts = this.toasts.filter(t => t.id !== id), 4000);
         },
 
-        handleFileUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                this.selectedFile = file;
-                const reader = new FileReader();
-                reader.onload = (e) => this.imagePreview = e.target.result;
-                reader.readAsDataURL(file);
-            }
-        },
-
+        // --- FETCH EVENTS ---
         async fetchEvents() {
             this.isLoading = true;
             try {
-                const res = await fetch('/admin/api/events');
-                if (!res.ok) throw new Error();
+                // URL must match Prefix(admin) + Prefix(api) + /events
+                const res = await fetch('/admin/api/events', {
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+
+                if (!res.ok) {
+                    if (res.status === 401) throw new Error("Session expired. Please login.");
+                    throw new Error(`Server Error: ${res.status}`);
+                }
+
                 const data = await res.json();
 
+                // Ensure data structure matches your Alpine loop
                 this.events = data.map(event => ({
                     ...event,
-                    isLive: Boolean(Number(event.isLive)),
-                    image: event.image && event.image.includes('/storage/http')
-                           ? event.image.split('/storage/')[1]
-                           : event.image
+                    isLive: Boolean(event.isLive)
                 }));
             } catch (e) {
-                this.addToast("Could not sync with server", "error");
+                console.error("Fetch Error:", e);
+                this.addToast("Sync Error: Verify login or network", "error");
             } finally {
                 this.isLoading = false;
                 this.refreshIcons();
             }
         },
 
+        // --- SAVE / UPDATE ---
         async saveEvent() {
             if(!this.formData.title || !this.formData.date) {
                 this.addToast("Title and Date are required", "error");
@@ -332,23 +334,21 @@ function eventManager() {
             data.append('time', this.formData.time || '');
             data.append('location', this.formData.location || '');
             data.append('isLive', this.formData.isLive ? 1 : 0);
-
             if (this.selectedFile) data.append('image', this.selectedFile);
 
-            // Handle Laravel PUT spoofing for updates
-            if (this.editingEvent) {
-                data.append('_method', 'PUT');
-            }
-
-            const url = this.editingEvent ? `/admin/api/events/${this.editingEvent}` : '/admin/api/events';
+            // Logic matches your Route::post('/events/{id}', ...) setup
+            const url = this.editingEvent
+                ? `/admin/api/events/${this.editingEvent}`
+                : '/admin/api/events';
 
             try {
-                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+                const token = document.querySelector('meta[name="csrf-token"]')?.content;
                 const response = await fetch(url, {
-                    method: 'POST', // Always POST, _method handles the logic
+                    method: 'POST',
                     headers: {
-                        'X-CSRF-TOKEN': csrfToken,
-                        'Accept': 'application/json'
+                        'X-CSRF-TOKEN': token,
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
                     },
                     body: data
                 });
@@ -368,26 +368,29 @@ function eventManager() {
             }
         },
 
+        // --- DELETE ---
         async confirmDelete() {
+            if (!this.eventToDelete) return;
             this.isLoading = true;
             try {
-                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+                const token = document.querySelector('meta[name="csrf-token"]')?.content;
                 const res = await fetch(`/admin/api/events/${this.eventToDelete.id}`, {
                     method: 'DELETE',
                     headers: {
-                        'X-CSRF-TOKEN': csrfToken,
-                        'Accept': 'application/json'
+                        'X-CSRF-TOKEN': token,
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
                     }
                 });
 
                 if(res.ok) {
                     this.events = this.events.filter(e => e.id !== this.eventToDelete.id);
-                    this.addToast("Event deleted permanently");
+                    this.addToast("Event deleted");
                 } else {
-                    throw new Error();
+                    throw new Error("Delete failed");
                 }
             } catch (e) {
-                this.addToast("Delete failed", "error");
+                this.addToast(e.message, "error");
             } finally {
                 this.isLoading = false;
                 this.showDeleteModal = false;
@@ -395,54 +398,44 @@ function eventManager() {
             }
         },
 
+        // UI HELPERS
+        handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                this.selectedFile = file;
+                const reader = new FileReader();
+                reader.onload = (e) => this.imagePreview = e.target.result;
+                reader.readAsDataURL(file);
+            }
+        },
         openModal(event = null) {
             if (event) {
                 this.editingEvent = event.id;
-                this.formData = {
-                    title: event.title,
-                    date: event.date,
-                    time: event.time,
-                    location: event.location,
-                    isLive: event.isLive
-                };
+                this.formData = { ...event };
                 this.imagePreview = event.image;
             } else {
                 this.editingEvent = null;
                 this.formData = { title: '', date: '', time: '', location: '', isLive: false };
                 this.imagePreview = null;
             }
-            this.selectedFile = null;
             this.isModalOpen = true;
             this.refreshIcons();
         },
-
         closeModal() { this.isModalOpen = false; },
-        triggerDelete(event) { this.eventToDelete = event; this.showDeleteModal = true; this.refreshIcons(); },
-        editEvent(event) { this.openModal(event); },
+        triggerDelete(event) { this.eventToDelete = event; this.showDeleteModal = true; },
         refreshIcons() {
-            this.$nextTick(() => {
-                if (typeof lucide !== 'undefined') {
-                    lucide.createIcons();
-                }
-            });
+            this.$nextTick(() => { if (window.lucide) window.lucide.createIcons(); });
         },
         filteredEvents() {
-            return this.events
-                .filter(e =>
-                    e.title.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-                    (e.location && e.location.toLowerCase().includes(this.searchQuery.toLowerCase()))
-                )
-                .sort((a, b) => b.id - a.id);
+            return this.events.filter(e => e.title.toLowerCase().includes(this.searchQuery.toLowerCase()));
         },
         paginatedEvents() {
             const start = (this.currentPage - 1) * this.rowsPerPage;
             return this.filteredEvents().slice(start, start + this.rowsPerPage);
         },
         totalPages() { return Math.ceil(this.filteredEvents().length / this.rowsPerPage) || 1; },
-        startRange() { return this.filteredEvents().length === 0 ? 0 : (this.currentPage - 1) * this.rowsPerPage + 1; },
-        endRange() { return Math.min(this.currentPage * this.rowsPerPage, this.filteredEvents().length); },
-        nextPage() { if(this.currentPage < this.totalPages()) { this.currentPage++; this.refreshIcons(); } },
-        prevPage() { if(this.currentPage > 1) { this.currentPage--; this.refreshIcons(); } }
+        nextPage() { if(this.currentPage < this.totalPages()) this.currentPage++; },
+        prevPage() { if(this.currentPage > 1) this.currentPage--; }
     }
 }
 </script>
