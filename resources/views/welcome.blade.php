@@ -208,7 +208,7 @@
                                 class="w-full h-full object-cover"
                                 poster="/images/sons.png"
                                 controls>
-                                <source src="https://drive.google.com/file/d/16WMuC-W4Qc2ZU3RWukys1EzIhOPZ-zY5/view" type="application/x-mpegURL">
+                                <source src="https://s3.eu-west-2.amazonaws.com/lodams-videoshare/videos/hlife015_601699fe3ccc7b0007cbc451.mp4" type="application/x-mpegURL">
                             </video>
                         </div>
 
@@ -217,7 +217,7 @@
                             <div class="flex justify-between items-center mb-2">
                                 <span class="text-blue-600 font-bold text-xs uppercase tracking-widest">Now Streaming</span>
                             </div>
-                            <h3 class="text-xl font-bold text-slate-900">The Higher Life — Episode 13</h3>
+                            <h3 class="text-xl font-bold text-slate-900">The Higher Life — Episode 15</h3>
                         </div>
                     </div>
 
