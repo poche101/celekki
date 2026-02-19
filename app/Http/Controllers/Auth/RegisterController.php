@@ -55,7 +55,7 @@ class RegisterController extends Controller
         Auth::login($user);
 
         // 5. Success Message & Redirect
-        return redirect()->route('profile')->with('success', 'Welcome! Your membership ID ' . $generatedCode . ' has been created.');
+        return redirect()->route('profile.edit')->with('success', 'Welcome! Your membership ID ' . $generatedCode . ' has been created.');
     }
 
 

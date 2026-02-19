@@ -89,16 +89,22 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/logout', [AdminLoginController::class, 'logout']);
 
     // Profile
-    // Profile
     Route::prefix('profile')->name('profile.')->group(function () {
+
+    // This will now be: route('profile.edit')
     Route::get('/', [ProfileController::class, 'edit'])->name('edit');
+
     Route::post('/update', [ProfileController::class, 'update'])->name('update');
     Route::post('/photo', [ProfileController::class, 'updatePhoto'])->name('photo');
+
+    // CHANGE THIS LINE:
+    Route::get('/index', [ProfileController::class, 'index'])->name('index');
+
     Route::post('/notifications', [ProfileController::class, 'toggleNotifications'])->name('notifications');
 
-    // ADD THIS LINE BELOW:
     Route::delete('/destroy', [ProfileController::class, 'destroy'])->name('destroy');
 });
+
     // --- ADMIN PANEL ---
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [MembersController::class, 'index'])->name('dashboard');
