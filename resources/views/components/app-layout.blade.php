@@ -213,7 +213,7 @@
         <div class="container-fluid px-6 lg:px-12 mx-auto">
             <div class="flex justify-between h-24 items-center">
                 <div class="flex-shrink-0">
-                    <a href="/"><img src="{{ asset('images/logo.png') }}" alt="Celekki Logo" class="h-22 "></a>
+                    <a href="/"><img src="{{ asset('images/logo.png') }}" alt="Celekki Logo" class="h-20 "></a>
                 </div>
 
                 <div class="hidden lg:flex items-center space-x-12">
@@ -319,7 +319,7 @@
                  class="absolute right-0 h-full w-[85%] max-w-sm bg-brand-blue shadow-2xl flex flex-col z-[110]">
 
                 <div class="bg-white px-10 py-8 flex justify-between items-center shadow-md">
-                    <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-22">
+                    <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-20">
                     <button @click="mobileMenuOpen = false" class="text-brand-blue focus:outline-none">
                         <i data-lucide="x" class="w-9 h-9"></i>
                     </button>
