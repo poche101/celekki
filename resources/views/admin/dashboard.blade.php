@@ -24,7 +24,7 @@
         <nav class="flex-1 px-4 py-5 space-y-1 overflow-y-auto">
             <template x-for="(item, index) in [
                 { label: 'Dashboard', icon: 'layout-dashboard' },      /* 0 */
-                { label: 'Blog Posts', icon: 'file-text' },           /* 1 */
+                { label: 'Attendance', icon: 'users' },           /* 1 */
                 { label: 'Testimonies', icon: 'heart-handshake' },    /* 2 */
                 { label: 'Events', icon: 'calendar' },                 /* 3 */
                 { label: 'Higher Life Videos', icon: 'video' },        /* 4 */

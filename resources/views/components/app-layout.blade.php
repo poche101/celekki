@@ -20,6 +20,10 @@
         }
     </script>
 
+    @if(app()->environment('production') && config('services.google.analytics_id'))
+        @include('admin.partials.analytics')
+    @endif
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script src="https://unpkg.com/lucide@latest"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -337,7 +341,7 @@
                                     @endif
                                 </div>
                                 <div>
-                                    <p class="text-white font-bold text-xl">{{ auth()->user()->name }}</p>
+                                    <p class="text-white font-medium text-xl">{{ auth()->user()->name }}</p>
                                     <a href="/profile" class="text-white/60 text-sm flex items-center hover:text-white">
                                         View Profile <i data-lucide="chevron-right" class="w-3 h-3 ml-1"></i>
                                     </a>
@@ -346,11 +350,11 @@
                         </div>
                     @endauth
 
-                    <a href="/" class="text-[24px] text-white">Home</a>
-                    <a href="/about" class="text-[24px] text-white">About</a>
+                    <a href="/" class="text-[20px] text-white">Home</a>
+                    <a href="/about" class="text-[20px] text-white">About</a>
 
                     <div class="space-y-4">
-                        <button @click="mobilePagesOpen = !mobilePagesOpen" class="w-full flex justify-between items-center text-[24px] text-white focus:outline-none">
+                        <button @click="mobilePagesOpen = !mobilePagesOpen" class="w-full flex justify-between items-center text-[20px] text-white focus:outline-none">
                             Pages
                             <i data-lucide="chevron-down" class="transition-transform" :class="mobilePagesOpen ? 'rotate-180' : ''"></i>
                         </button>
@@ -360,10 +364,10 @@
                         </div>
                     </div>
 
-                    <a href="{{ route('events.index') }}" class="text-[24px] text-white">Events</a>
-                    <a href="/h-life" class="text-[24px] text-white">Higher Life</a>
+                    <a href="{{ route('events.index') }}" class="text-[20px] text-white">Events</a>
+                    <a href="/h-life" class="text-[20px] text-white">Higher Life</a>
 
-                    <button @click="checkLiveAccess" class="text-[24px] font-bold text-white flex items-center focus:outline-none">
+                    <button @click="checkLiveAccess" class="text-[20px] font-medium text-white flex items-center focus:outline-none">
                         <span class="w-2.5 h-2.5 bg-red-500 rounded-full mr-3 animate-pulse"></span>Live Stream
                     </button>
 

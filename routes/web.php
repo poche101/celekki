@@ -16,6 +16,7 @@ use App\Http\Controllers\ServiceCenterController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\LiveAttendanceController;
 use App\Http\Controllers\TestimonyController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -107,6 +108,11 @@ Route::middleware(['auth'])->group(function () {
 
     // --- ADMIN PANEL ---
     Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('/analytics', [DashboardController::class, 'index'])->name('analytics');
+        // routes/web.php
+        Route::get('/admin/analytics/export', [DashboardController::class, 'export'])->name('admin.analytics.export');
+        Route::get('/admin/analytics/export', [App\Http\Controllers\DashboardController::class, 'export'])->name('admin.analytics.export');
+        Route::get('/analytics/export', [DashboardController::class, 'export'])->name('analytics.export');
         Route::get('/dashboard', [MembersController::class, 'index'])->name('dashboard');
         Route::get('/members', [MembersController::class, 'index'])->name('members');
         Route::get('/blog', [MembersController::class, 'index'])->name('blog');
