@@ -78,6 +78,7 @@
 
             <form id="prayerForm" action="{{ route('prayer.store') }}" method="POST" class="p-6 space-y-4">
                 @csrf
+                <input type="hidden" name="episode_slug" value="{{ $slug }}">
                 <div>
                     <label class="block text-sm font-medium text-gray-400 mb-1">Full Name</label>
                     <input type="text" name="name" id="userName" required class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 focus:ring-2 focus:ring-purple-500 focus:outline-none transition-all">

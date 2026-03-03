@@ -115,12 +115,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/analytics/export', [DashboardController::class, 'export'])->name('admin.analytics.export');
         Route::get('/admin/analytics/export', [App\Http\Controllers\DashboardController::class, 'export'])->name('admin.analytics.export');
         Route::get('/analytics/export', [DashboardController::class, 'export'])->name('analytics.export');
-        Route::get('/dashboard', [MembersController::class, 'index'])->name('dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/members', [MembersController::class, 'index'])->name('members');
         Route::get('/blog', [MembersController::class, 'index'])->name('blog');
         Route::get('/live-stream', [MembersController::class, 'index'])->name('live-stream.view');
-
-        // ADMIN API MANAGEMENT
+        Route::get('/export-social', [DashboardController::class, 'exportSocialData'])->name('social.export');
         Route::prefix('api')->group(function () {
             // Video Management
             Route::get('/videos', [HLifeController::class, 'index'])->name('videos.index');

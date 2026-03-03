@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Viewer extends Model
 {
-    protected $fillable = ['name', 'phone', 'location'];
+    protected $fillable = ['name', 'phone', 'location', 'episode_slug'];
 }

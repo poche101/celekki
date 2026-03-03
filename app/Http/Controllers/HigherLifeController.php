@@ -18,27 +18,30 @@ class HigherLifeController extends Controller
     /**
      * Handle the form submission and save viewer data.
      */
-    public function access(Request $request)
-    {
-        $validated = $request->validate([
-            'name'         => 'required|string|max:255',
-            'phone'        => 'nullable|string|max:20',
-            'location'     => 'nullable|string|in:Mainland,Island',
-            'episode_slug' => 'required|string'
-        ]);
+   public function access(Request $request)
+{
+    $validated = $request->validate([
+        'name'         => 'required|string|max:255',
+        'phone'        => 'nullable|string|max:20',
+        'location'     => 'nullable|string|in:Mainland,Island',
+        'episode_slug' => 'required|string'
+    ]);
 
-        Viewer::create([
-            'name'     => $validated['name'],
-            'phone'    => $validated['phone'],
-            'location' => $validated['location'],
-        ]);
+    // ADDED: episode_slug is now being saved to the database
+    Viewer::create([
+        'name'         => $validated['name'],
+        'phone'        => $validated['phone'],
+        'location'     => $validated['location'],
+        'episode_slug' => $validated['episode_slug'],
+    ]);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Access granted',
-            'redirect_url' => route('higher-life.episode', $validated['episode_slug'])
-        ]);
-    }
+   return response()->json([
+    'status' => 'success',
+    'message' => 'Access granted',
+    // Change this line:
+    'redirect_url' => route('higher-life.episode', ['slug' => $validated['episode_slug']])
+]);
+}
 
     /**
      * Show the dynamic episode page using ONE blade file.

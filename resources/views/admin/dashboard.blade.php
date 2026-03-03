@@ -13,9 +13,9 @@
      x-data="{ selectedIndex: $persist(0) }"
      x-init="$nextTick(() => lucide.createIcons())">
 
-    <aside class="w-64 bg-[#0A192F] flex flex-col shrink-0">
+    <aside class="w-64 bg-[#0A192F] flex flex-col shrink-0 shadow-2xl">
         <div class="p-8 flex items-center gap-3">
-            <div class="w-8 h-8 flex items-center justify-center bg-amber-500 rounded-lg">
+            <div class="w-8 h-8 flex items-center justify-center bg-amber-500 rounded-lg shadow-lg shadow-amber-500/20">
                 <i data-lucide="layout-template" class="text-white w-5 h-5"></i>
             </div>
             <span class="text-white text-lg font-black tracking-widest uppercase">Admin</span>
@@ -24,18 +24,19 @@
         <nav class="flex-1 px-4 py-5 space-y-1 overflow-y-auto">
             <template x-for="(item, index) in [
                 { label: 'Dashboard', icon: 'layout-dashboard' },      /* 0 */
-                { label: 'Attendance', icon: 'users' },           /* 1 */
-                { label: 'Testimonies', icon: 'heart-handshake' },    /* 2 */
-                { label: 'Events', icon: 'calendar' },                 /* 3 */
-                { label: 'Higher Life Videos', icon: 'video' },        /* 4 */
-                { label: 'Live Stream', icon: 'radio' },              /* 5 */
-                { label: 'Members', icon: 'users' }                   /* 6 */
+                { label: 'Attendance', icon: 'users-round' },          /* 1 */
+                { label: 'Testimonies', icon: 'heart-handshake' },     /* 2 */
+                { label: 'Events', icon: 'calendar-days' },            /* 3 */
+                { label: 'Higher Life Videos', icon: 'clapperboard' }, /* 4 */
+                { label: 'Live Stream', icon: 'play-circle' },         /* 5 */
+                { label: 'Members', icon: 'contact-2' },               /* 6 */
+                { label: 'Social Media', icon: 'share-2' }             /* 7 */
             ]" :key="index">
                 <button
                     @click="selectedIndex = index; $nextTick(() => lucide.createIcons());"
-                    class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-200"
-                    :class="selectedIndex === index ? 'bg-white/10 text-white' : 'text-white/60 hover:text-white hover:bg-white/5'">
-                    <i :data-lucide="item.icon" class="w-5 h-5 mr-4" :class="selectedIndex === index ? 'text-amber-500' : ''"></i>
+                    class="w-full flex items-center px-4 py-3 rounded-xl transition-all duration-200 group"
+                    :class="selectedIndex === index ? 'bg-white/10 text-white shadow-inner' : 'text-white/60 hover:text-white hover:bg-white/5'">
+                    <i :data-lucide="item.icon" class="w-5 h-5 mr-4 transition-colors" :class="selectedIndex === index ? 'text-amber-500' : 'group-hover:text-white'"></i>
                     <span class="text-sm font-semibold" x-text="item.label"></span>
                 </button>
             </template>
@@ -44,8 +45,8 @@
         <div class="p-6">
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button type="submit" class="w-full flex items-center px-4 py-3 text-white/60 hover:text-white rounded-xl transition-colors">
-                    <i data-lucide="log-out" class="w-5 h-5 mr-4"></i>
+                <button type="submit" class="w-full flex items-center px-4 py-3 text-white/60 hover:text-white rounded-xl transition-colors hover:bg-red-500/10 group">
+                    <i data-lucide="log-out" class="w-5 h-5 mr-4 group-hover:text-red-400"></i>
                     <span class="text-sm font-semibold">Logout</span>
                 </button>
             </form>
@@ -56,11 +57,11 @@
         <header class="h-20 bg-white border-b border-slate-200 px-10 flex items-center justify-between shrink-0">
             <div>
                 <h1 class="text-lg font-bold text-slate-900">Welcome back, Admin</h1>
-                <p class="text-xs text-slate-500 font-medium">CE Lagos Zone 5 Dashboard</p>
+                <p class="text-xs text-slate-500 font-medium uppercase tracking-wider">CE Lagos Zone 5 Dashboard</p>
             </div>
 
             <div class="flex items-center gap-6">
-                <div class="w-9 h-9 bg-[#0A192F] rounded-full flex items-center justify-center">
+                <div class="w-9 h-9 bg-[#0A192F] rounded-full flex items-center justify-center border-2 border-slate-100">
                     <i data-lucide="user" class="text-white w-4 h-4"></i>
                 </div>
             </div>
@@ -95,10 +96,15 @@
                 @include('admin.tabs.members')
             </div>
 
-            <div x-show="![0,1,2,3,4,5,6].includes(selectedIndex)" x-transition.opacity.duration.300ms class="p-10" x-cloak>
-                <div class="bg-white p-20 rounded-3xl text-center border border-slate-200 shadow-sm">
-                    <i data-lucide="construction" class="w-12 h-12 text-slate-300 mx-auto mb-4"></i>
+            <div x-show="selectedIndex === 7" x-transition.opacity.duration.300ms x-cloak>
+                @include('admin.tabs.social-media')
+            </div>
+
+            <div x-show="![0,1,2,3,4,5,6,7].includes(selectedIndex)" x-transition.opacity.duration.300ms class="p-10" x-cloak>
+                <div class="bg-white p-20 rounded-3xl text-center border border-slate-200 shadow-sm max-w-2xl mx-auto">
+                    <i data-lucide="sparkles" class="w-12 h-12 text-slate-300 mx-auto mb-4"></i>
                     <h2 class="text-xl font-bold text-slate-800" x-text="'Tab Content for ' + selectedIndex + ' Coming Soon'"></h2>
+                    <p class="text-slate-500 mt-2">We're working on making this feature available for you.</p>
                 </div>
             </div>
         </div>
@@ -108,6 +114,7 @@
 <script src="https://unpkg.com/lucide@latest"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+    // Initialize Lucide Icons
     lucide.createIcons();
 </script>
 <style>
