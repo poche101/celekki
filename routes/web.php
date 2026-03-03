@@ -17,6 +17,8 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\LiveAttendanceController;
 use App\Http\Controllers\TestimonyController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PrayerController;
+use App\Http\Controllers\HigherLifeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -146,3 +148,18 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/testimonies/{testimony}', [TestimonyController::class, 'update'])->name('testimonies.update');
     });
 });
+
+
+// 1. The Gateway (View the form)
+// Access this via: /higher-life/access/episode-5 or /higher-life/access/episode-1
+Route::get('/higher-life/access/{slug}', [HigherLifeController::class, 'showGate'])->name('higher-life.gate');
+
+// 2. The Gateway Submission (Process the viewer data)
+Route::post('/higher-life/access', [HigherLifeController::class, 'access'])->name('higher-life.access');
+
+// 3. The Dynamic Video Page
+// This one route handles ALL episodes based on the {slug}
+Route::get('/higher-life/{slug}', [HigherLifeController::class, 'showEpisode'])->name('higher-life.episode');
+
+// 4. Prayer Request Submission (Global for all episodes)
+Route::post('/prayer-request', [PrayerController::class, 'store'])->name('prayer.store');
