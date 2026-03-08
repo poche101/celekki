@@ -53,7 +53,7 @@
         </div>
 
         <div class="glass-card rounded-[2.5rem] p-8 md:p-10 shadow-3xl">
-            <form id="accessForm" action="/higher-life/access" method="POST" class="space-y-6">
+            <form id="accessForm" action="{{ route('higher-life.access') }}" method="POST" class="space-y-6">
                 @csrf
                 <input type="hidden" name="episode_slug" value="{{ $slug }}">
 
@@ -116,59 +116,91 @@
         </p>
     </div>
 
-    <script>
-        // Initialize Icons
+   <script>
+    // Initialize Lucide Icons
+    if (typeof lucide !== 'undefined') {
         lucide.createIcons();
+    }
 
-        const form = document.getElementById('accessForm');
-        const toast = document.getElementById('toast');
-        const toastMsg = document.getElementById('toastMessage');
+    const form = document.getElementById('accessForm');
+    const toast = document.getElementById('toast');
+    const toastMsg = document.getElementById('toastMessage');
 
-        function showToast(msg, isError = false) {
-            toastMsg.textContent = msg;
-            toastMsg.className = isError ?
-                "px-6 py-4 rounded-2xl shadow-2xl font-medium border bg-red-900/80 border-red-500 text-white backdrop-blur-md" :
-                "px-6 py-4 rounded-2xl shadow-2xl font-medium border bg-green-900/80 border-green-500 text-white backdrop-blur-md";
-            toast.classList.remove('hidden');
+    /**
+     * Display a temporary notification to the user
+     */
+    function showToast(msg, isError = false) {
+        toastMsg.textContent = msg;
+        toastMsg.className = isError ?
+            "px-6 py-4 rounded-2xl shadow-2xl font-medium border bg-red-900/80 border-red-500 text-white backdrop-blur-md" :
+            "px-6 py-4 rounded-2xl shadow-2xl font-medium border bg-green-900/80 border-green-500 text-white backdrop-blur-md";
+
+        toast.classList.remove('hidden');
+
+        // Auto-hide toast if it's an error (Success toasts handle their own redirect)
+        if (isError) {
+            setTimeout(() => toast.classList.add('hidden'), 4000);
         }
+    }
 
-        form.onsubmit = async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('submitBtn');
-            const btnText = document.getElementById('btnText');
+    form.onsubmit = async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const originalText = btnText.textContent;
 
-            // UI State: Loading
-            btn.disabled = true;
-            btnText.textContent = "Authorizing...";
+        // UI State: Loading
+        btn.disabled = true;
+        btnText.textContent = "Authorizing Access...";
 
-            try {
-                const formData = new FormData(form);
-                const response = await fetch(form.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'Accept': 'application/json'
-                    }
-                });
+        try {
+            const formData = new FormData(form);
 
-                if (response.ok) {
-                    const result = await response.json();
-                    showToast("Access Granted. Redirecting...");
-                    setTimeout(() => {
-                        window.location.href = result.redirect_url; // Use the URL from the controller
-                    }, 1500);
-                } else {
-                    throw new Error("Validation failed");
+            // Get CSRF Token safely
+            const csrfToken = document.querySelector('input[name="_token"]')?.value;
+
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
                 }
-            } catch (err) {
-                showToast("Something went wrong. Please check your details.", true);
-                btn.disabled = false;
-                btnText.textContent = "Access Episodes";
-                setTimeout(() => toast.classList.add('hidden'), 3000);
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.status === 'success') {
+                // UI State: Success
+                showToast("Access Granted! Redirecting to episode...");
+                btnText.textContent = "Redirecting...";
+
+                // Redirect to the URL provided by the HigherLifeController
+                setTimeout(() => {
+                    window.location.href = result.redirect_url;
+                }, 1200);
+
+            } else {
+                // Handle Validation errors or logic errors from Controller
+                let errorMsg = result.message || "Unable to authorize. Please check your details.";
+
+                // If Laravel returns validation object (422), get the first error
+                if (result.errors) {
+                    errorMsg = Object.values(result.errors)[0][0];
+                }
+
+                throw new Error(errorMsg);
             }
-        };
-    </script>
+
+        } catch (err) {
+            // UI State: Error Reset
+            showToast(err.message, true);
+            btn.disabled = false;
+            btnText.textContent = originalText;
+        }
+    };
+</script>
 </body>
 
 </html>

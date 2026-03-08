@@ -149,16 +149,22 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-// 1. The Gateway (View the form)
-// Access this via: /higher-life/access/episode-5 or /higher-life/access/episode-1
-Route::get('/higher-life/access/{slug}', [HigherLifeController::class, 'showGate'])->name('higher-life.gate');
+// 1. The Form Submission Route (Keep this name for your Blade form)
+Route::post('/higher-life/access', [HigherLifeController::class, 'access'])
+    ->name('higher-life.access');
 
-// 2. The Gateway Submission (Process the viewer data)
-Route::post('/higher-life/access', [HigherLifeController::class, 'access'])->name('higher-life.access');
+// 2. The Gate (The form page users see first)
+// Matches: celekki.org/access/ep1005
+Route::get('/access/ep{id}', [HigherLifeController::class, 'showGate'])
+    ->where('id', '[0-9]+')
+    ->name('higher-life.gate');
 
-// 3. The Dynamic Video Page
-// This one route handles ALL episodes based on the {slug}
-Route::get('/higher-life/{slug}', [HigherLifeController::class, 'showEpisode'])->name('higher-life.episode');
+// 3. The Episode Page (The video page)
+// Matches: celekki.org/ep1005
+Route::get('/ep{id}', [HigherLifeController::class, 'showEpisode'])
+    ->where('id', '[0-9]+')
+    ->name('higher-life.episode');
 
 // 4. Prayer Request Submission (Global for all episodes)
-Route::post('/prayer-request', [PrayerController::class, 'store'])->name('prayer.store');
+Route::post('/submit-prayer', [PrayerController::class, 'store'])->name('prayer.store');
+

@@ -3,17 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Prayer extends Model
 {
-    use HasFactory;
-
-    protected $fillable = [
-        'name',
-        'email',
-        'phone',
-        'request',
-        'episode_slug'
-    ];
+    protected $fillable = ['name', 'request', 'episode_slug', 'email', 'phone'];
 }

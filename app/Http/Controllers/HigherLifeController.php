@@ -2,86 +2,127 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Episode;
 use App\Models\Viewer;
+use App\Models\Prayer;
 use Illuminate\Http\Request;
 
 class HigherLifeController extends Controller
 {
     /**
-     * Show the elegant gateway form.
+     * Show Access Gate (Registration Form)
      */
-    public function showGate($slug)
+    public function showGate($id)
     {
-        return view('higherlife.gate', compact('slug'));
+        $slug = 'ep' . $id;
+        return view('higherlife.gate', compact('slug', 'id'));
     }
 
     /**
-     * Handle the form submission and save viewer data.
+     * Handle Gate Form Submission
      */
-   public function access(Request $request)
-{
-    $validated = $request->validate([
-        'name'         => 'required|string|max:255',
-        'phone'        => 'nullable|string|max:20',
-        'location'     => 'nullable|string|in:Mainland,Island',
-        'episode_slug' => 'required|string'
-    ]);
+    public function access(Request $request)
+    {
+        $validated = $request->validate([
+            'name'         => 'required|string|max:255',
+            'phone'        => 'nullable|string|max:20',
+            'location'     => 'nullable|string',
+            'episode_slug' => 'required|string'
+        ]);
 
-    // ADDED: episode_slug is now being saved to the database
-    Viewer::create([
-        'name'         => $validated['name'],
-        'phone'        => $validated['phone'],
-        'location'     => $validated['location'],
-        'episode_slug' => $validated['episode_slug'],
-    ]);
+        // Grant access in session
+        session(['access_granted_' . $validated['episode_slug'] => true]);
 
-   return response()->json([
-    'status' => 'success',
-    'message' => 'Access granted',
-    // Change this line:
-    'redirect_url' => route('higher-life.episode', ['slug' => $validated['episode_slug']])
-]);
-}
+        // Log visitor
+        Viewer::create($validated);
+
+        $id = str_replace('ep', '', $validated['episode_slug']);
+
+        return response()->json([
+            'status' => 'success',
+            'redirect_url' => route('higher-life.episode', ['id' => $id])
+        ]);
+    }
 
     /**
-     * Show the dynamic episode page using ONE blade file.
+     * Show Episode Page (Video Player)
      */
-    public function showEpisode($slug)
+    public function showEpisode($id)
     {
-        $videoData = [
-            'episode-5' => [
-                'title' => 'How To Make Your Life What You Want',
-                'video_url' => 'https://8v4o6w73awqp-hls-push.5centscdn.com/EPISODE%205%20Repackaged.mp4/playlist.m3u8',
-                'poster' => '/images/how.png',
-                'number' => '5',
-                'type' => 'hls' // Uses HLS.js
-            ],
-            'episode-12' => [
-                'title' => '2 Of Your Creative Power',
-                'video_url' => 'https://s3.eu-west-2.amazonaws.com/lodams-videoshare/videos/Nov9tEd_5a085fe4f916b95c0f2f58e9.mp4',
-                'poster' => '/images/power.png',
-                'number' => '12',
-                'type' => 'mp4' // Standard video playback
-            ],
-             'episode-8' => [
-                'title' => 'The Study Of Ephesians',
-                'video_url' => 'https://s3.eu-west-2.amazonaws.com/lodams-videoshare/videos/h-life13202_601699fe3ccc7b0007cbc451.mp4',
-                'poster' => '/images/THE.png',
-                'number' => '8',
-                'type' => 'mp4' // Standard video playback
-            ],
-        ];
+        $slug = 'ep' . $id;
 
-        // 1. Check if the requested slug exists in our data
-        if (!array_key_exists($slug, $videoData)) {
-            // If not found, redirect to the access gate for episode-5 as a fallback
-            return redirect()->route('higher-life.gate', ['slug' => 'episode-5']);
+        // Security Check
+        if (!session()->has('access_granted_' . $slug)) {
+            return redirect()->route('higher-life.gate', ['id' => $id]);
         }
 
-        // 2. Get the specific episode data
-        $episode = $videoData[$slug];
+        // 1. Try to find in Database first
+        $episode = Episode::where('slug', $slug)->first();
 
-        // 3. Return the SAME view for every episode
-        return view('higherlife.episode', compact('episode', 'slug'));
+        if (!$episode) {
+            // 2. Fallback Library
+            $library = [
+                '5' => [
+                    'title' => 'How To Make Your Life What You Want',
+                    'video' => 'https://8v4o6w73awqp-hls-push.5centscdn.com/EPISODE%205%20Repackaged.mp4/playlist.m3u8',
+                    'poster'=> 'images/poster5.png'
+                ],
+                '12' => [
+                    'title' => '2 Of Your Creative Powers',
+                    'video' => 'https://s3.eu-west-2.amazonaws.com/lodams-videoshare/videos/Nov9tEd_5a085fe4f916b95c0f2f58e9.mp4',
+                    'poster'=> 'images/power.png'
+                ],
+                '14' => [
+                    'title' => 'The Study Of Ephesians',
+                    'video' => 'https://s3.eu-west-2.amazonaws.com/lodams-videoshare/videos/h-life13202_601699fe3ccc7b0007cbc451.mp4',
+                    'poster'=> 'images/THE.png'
+                ],
+            ];
+
+            // 3. FLEXIBLE SEARCH: Check if the ID matches or ends with a library key
+            $matchedData = null;
+            foreach ($library as $key => $details) {
+                // This matches if $id is '12', '1012', or '10012'
+                if ($id == $key || str_ends_with($id, $key)) {
+                    $matchedData = $details;
+                    break;
+                }
+            }
+
+            // 4. Apply matched data or use default
+            $data = $matchedData ?? [
+                'title' => 'The Higher Life Series',
+                'video' => '',
+                'poster'=> 'images/logo.png'
+            ];
+
+            $episode = new Episode();
+            $episode->slug = $slug;
+            $episode->title = $data['title'];
+            $episode->video_url = $data['video'];
+            $episode->poster = $data['poster'];
+        }
+
+        return view('higherlife.episode', compact('episode', 'slug', 'id'));
+    }
+
+    /**
+     * Handle Prayer Request Submission
+     */
+    public function submitPrayer(Request $request)
+    {
+        $validated = $request->validate([
+            'name'         => 'required|string|max:255',
+            'email'        => 'nullable|email',
+            'request'      => 'required|string|min:10',
+            'episode_slug' => 'required|string',
+        ]);
+
+        Prayer::create($validated);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Your prayer request has been sent to Pastor Deola Phillips.'
+        ]);
     }
 }
