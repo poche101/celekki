@@ -541,10 +541,7 @@
                     We are a global ministry with a vision to take the divine presence of God to the peoples and nations of the world. At Christ Embassy, we demonstrate the character of the Spirit and empower lives through the Word.
                 </p>
                 <div class="pt-4">
-                    <div class="inline-flex items-center space-x-2 bg-blue-600/10 text-blue-400 px-4 py-2 rounded-full text-sm font-bold border border-blue-500/20">
-                        <i data-lucide="globe" class="w-4 h-4"></i>
-                        <span>Fulfilling Divine Purpose</span>
-                    </div>
+
                 </div>
             </div>
 
@@ -598,12 +595,12 @@
                         </div>
                         <span class="text-slate-400 pt-1 font-medium">+234 907 641 5312</span>
                     </li>
-                    <li class="flex items-start">
+                    {{-- <li class="flex items-start">
                         <div class="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center mr-4 shrink-0 text-blue-500 shadow-lg shadow-blue-500/5">
                             <i data-lucide="mail" class="w-5 h-5"></i>
                         </div>
                         <span class="text-slate-400 pt-1 font-medium text-blue-400">contact@celekki.org</span>
-                    </li>
+                    </li> --}}
                 </ul>
             </div>
         </div>
