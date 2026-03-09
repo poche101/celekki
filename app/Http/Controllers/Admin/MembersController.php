@@ -19,85 +19,71 @@ class MembersController extends Controller
         $memberSearch = $request->input('search');
         $testimonySearch = $request->input('testimony_search');
 
-        // 2. Member Statistics Calculation (INTEGERS)
+        // 2. Member Statistics (SYNCHRONIZED)
+        // We name it $totalMembers here to match the return and the Blade
+        $totalMembers = User::count();
         $target = 30000;
-        $totalMembersCount = User::count();
-        $progressPercent = $target > 0 ? ($totalMembersCount / $target) * 100 : 0;
-        $progressPercent = min($progressPercent, 100);
+        $progressPercent = $target > 0 ? min(($totalMembers / $target) * 100, 100) : 0;
 
         // 3. Comprehensive Statistics Array
         $stats = [
+            'total_members'  => $totalMembers,
             'total'          => Testimony::count(),
             'pending'        => Testimony::where('is_approved', false)->count(),
             'video'          => Testimony::whereNotNull('video_url')->where('video_url', '!=', '')->count(),
-            'total_logins'   => User::count(),
+            'total_logins'   => $totalMembers,
 
-            // Safe checks for model counts
+            // Safe checks for other models
             'total_prayers'  => class_exists(\App\Models\Prayer::class) ? \App\Models\Prayer::count() : 0,
             'total_episodes' => class_exists(\App\Models\Hlife::class) ? \App\Models\Hlife::count() : 0,
             'total_comments' => class_exists(\App\Models\LiveComment::class) ? \App\Models\LiveComment::count() : 0,
             'total_viewers'  => class_exists(\App\Models\LiveAttendance::class) ? \App\Models\LiveAttendance::count() : 0,
         ];
 
-        // 4. Attendance/Viewer Statistics (PAGINATED)
+        // 4. Social Activity Feed (Viewers list)
         if (class_exists(\App\Models\LiveAttendance::class)) {
-            $viewers = \App\Models\LiveAttendance::query()->latest()->paginate(10, ['*'], 'viewers_page');
+            $viewers = \App\Models\LiveAttendance::latest()->paginate(10, ['*'], 'viewers_page');
         } else {
             $viewers = new LengthAwarePaginator([], 0, 10, 1, ['path' => $request->url()]);
         }
 
-        // 4.5 Prayer Requests Statistics (NEW: Defines the $prayers variable)
-        if (class_exists(\App\Models\Prayer::class)) {
-            $prayers = \App\Models\Prayer::query()->latest()->paginate(10, ['*'], 'prayers_page');
-        } else {
-            // Safe fallback to prevent "Undefined Variable" and "firstItem() on int" errors
-            $prayers = new LengthAwarePaginator([], 0, 10, 1, [
-                'path' => $request->url(),
-                'query' => $request->query(),
-            ]);
-        }
+        // 5. Prayer Requests (Lookup Collection)
+        $prayers = class_exists(\App\Models\Prayer::class) ? \App\Models\Prayer::all() : collect();
 
-        // 5. Fetch Testimonies (PAGINATED OBJECT)
-        $testimonies = Testimony::query()
-            ->when($testimonySearch, function ($query, $search) {
-                $query->where(function($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%")
-                      ->orWhere('group', 'like', "%{$search}%")
-                      ->orWhere('content', 'like', "%{$search}%");
-                });
-            })
-            ->latest()
-            ->paginate(10, ['*'], 'testimony_page')
-            ->appends(['testimony_search' => $testimonySearch, 'search' => $memberSearch]);
-
-        // 6. Fetch Members (PAGINATED OBJECT)
+        // 6. Paginated Lists (Members & Testimonies)
         $members = User::query()
-            ->when($memberSearch, function ($query, $search) {
-                $query->where(function($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%")
-                      ->orWhere('email', 'like', "%{$search}%")
-                      ->orWhere('member_id', 'like', "%{$search}%")
-                      ->orWhere('church_group', 'like', "%{$search}%")
-                      ->orWhere('central_church', 'like', "%{$search}%")
-                      ->orWhere('phone', 'like', "%{$search}%");
-                });
+            ->when($memberSearch, function ($q, $search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%")
+                  ->orWhere('phone', 'like', "%{$search}%");
             })
             ->latest()
             ->paginate(15, ['*'], 'member_page')
-            ->appends(['search' => $memberSearch, 'testimony_search' => $testimonySearch]);
+            ->appends(['search' => $memberSearch]);
 
-        // 7. Return the view with all required variables
+        $testimonies = Testimony::query()
+            ->when($testimonySearch, function ($q, $search) {
+                $q->where('name', 'like', "%{$search}%");
+            })
+            ->latest()
+            ->paginate(10, ['*'], 'testimony_page')
+            ->appends(['testimony_search' => $testimonySearch]);
+
+        // 7. FINAL RETURN
+dd($totalMembers);
+        // Ensure the key 'totalMembers' exactly matches your Blade variable $totalMembers
         return view('admin.dashboard', [
+            'totalMembers'    => $totalMembers,
+            'stats'           => $stats,
             'members'         => $members,
-            'totalMembers'    => $totalMembersCount,
             'target'          => $target,
             'progressPercent' => $progressPercent,
             'search'          => $memberSearch,
             'testimonies'     => $testimonies,
             'testimonySearch' => $testimonySearch,
-            'stats'           => $stats,
             'viewers'         => $viewers,
-            'prayers'         => $prayers, // Now correctly defined above
+            'prayers'         => $prayers,
+
         ]);
     }
 }

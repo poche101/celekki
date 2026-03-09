@@ -23,8 +23,7 @@
         <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100 flex items-center justify-between">
             <div>
                 <p class="text-sm font-black uppercase tracking-widest text-slate-400 mb-1">Registered Users</p>
-                <h3 class="text-5xl font-black text-slate-900">{{ number_format($totalMembers ?? 0) }}</h3>
-            </div>
+<h3 class="text-5xl font-black text-slate-900">{{ number_format($totalMembers ?? 0) }}</h3>            </div>
             <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center">
                 <i data-lucide="users" class="w-8 h-8"></i>
             </div>

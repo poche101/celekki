@@ -21,9 +21,11 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         // 1. Fetch Database Data for all tabs
-        // We now paginate viewers (10 per page) to fix the pagination errors
         $viewers = Viewer::latest()->paginate(10, ['*'], 'viewer_page');
         $prayers = Prayer::latest()->get();
+
+        // Define totalMembers explicitly for the compact() function
+        $totalMembers = User::count();
 
         // Paginated data for Testimonies tab
         $testimonies = class_exists('\App\Models\Testimony')
@@ -35,12 +37,12 @@ class DashboardController extends Controller
 
         // 2. Prepare the $stats array used by all tab cards
         $stats = [
-            'total_logins'   => Viewer::count(), // Total count for stats cards
+            'total_logins'   => Viewer::count(),
             'total_prayers'  => $prayers->count(),
             'total_episodes' => Viewer::whereNotNull('episode_slug')->distinct('episode_slug')->count('episode_slug'),
             'pending'        => class_exists('\App\Models\Testimony') ? Testimony::where('status', 'pending')->count() : 0,
             'total'          => class_exists('\App\Models\Testimony') ? Testimony::count() : 0,
-            'total_members'  => User::count(),
+            'total_members'  => $totalMembers,
         ];
 
         // 3. Determine timeframe for Analytics (Default to weekly)
@@ -83,12 +85,13 @@ class DashboardController extends Controller
         $progressPercent = ($goal > 0) ? min(($totalViews / $goal) * 100, 100) : 0;
         $goalLabel = number_format($totalViews / 1000, 1) . 'k';
 
-        // 7. Return view with all variables
+        // 7. Return view with all variables (added 'totalMembers' here)
         return view('admin.dashboard', compact(
             'viewers',
             'prayers',
             'testimonies',
             'members',
+            'totalMembers', // <--- FIXED: Now explicitly passing the variable
             'stats',
             'dates',
             'views',
@@ -103,7 +106,7 @@ class DashboardController extends Controller
     /**
      * Export Social Engagement data as CSV
      */
-   public function exportSocialData()
+    public function exportSocialData()
     {
         $viewers = Viewer::latest()->get();
         $filename = "social_engagement_report_" . now()->format('Y-m-d_His') . ".csv";

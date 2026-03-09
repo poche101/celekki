@@ -115,8 +115,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/analytics/export', [DashboardController::class, 'export'])->name('admin.analytics.export');
         Route::get('/admin/analytics/export', [App\Http\Controllers\DashboardController::class, 'export'])->name('admin.analytics.export');
         Route::get('/analytics/export', [DashboardController::class, 'export'])->name('analytics.export');
-// Find this line in your web.php (inside the admin prefix group)
-Route::get('/dashboard', [MembersController::class, 'index'])->name('dashboard');        Route::get('/members', [MembersController::class, 'index'])->name('members');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/members', [MembersController::class, 'index'])->name('members');
         Route::get('/blog', [MembersController::class, 'index'])->name('blog');
         Route::get('/live-stream', [MembersController::class, 'index'])->name('live-stream.view');
         Route::get('/export-social', [DashboardController::class, 'exportSocialData'])->name('social.export');
