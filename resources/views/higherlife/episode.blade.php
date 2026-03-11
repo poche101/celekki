@@ -21,10 +21,10 @@
 
         <header class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
+                 <p class="text-gray-400 mt-2 text-lg">Join Our</p>
                 <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-transparent bg-clip-text" style="background-image: linear-gradient(to right, #a78bfa, #f59e0b);">
-                    The Higher Life
+                    Sunday Service
                 </h1>
-                <p class="text-gray-400 mt-2 text-lg">with Pastor Deola Phillips</p>
             </div>
 
             <button id="openPrayerModal" class="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white px-8 py-3 rounded-full font-semibold transition-all shadow-lg transform hover:scale-105">
@@ -51,17 +51,8 @@
                     <span class="text-purple-400 font-mono text-sm uppercase tracking-widest">Episode {{ $id }}</span>
                     <h2 class="text-3xl font-bold mt-2">{{ $episode->title }}</h2>
                     <p class="text-gray-400 mt-4 leading-relaxed text-lg max-w-2xl">
-                        Join Pastor Deola Phillips in this soul-stirring episode as we explore the depths of God's plan for your life.
+                        With Pastor Deola Phillips
                     </p>
-                </div>
-
-                <div class="w-full md:w-auto pt-2">
-                    <a href="/h-life" class="inline-flex items-center justify-center gap-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white px-6 py-4 rounded-2xl font-bold transition-all w-full md:w-auto">
-                        <span>View Other Episodes</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-400" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                        </svg>
-                    </a>
                 </div>
             </div>
         </div>

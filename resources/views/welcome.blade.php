@@ -80,7 +80,7 @@
 
             <div class="group cursor-pointer flex flex-col">
                 <div class="relative h-80 mb-8 overflow-hidden rounded-[2rem] shadow-2xl shadow-blue-900/10">
-                    <img src="/images/ce3.jpeg"
+                    <img src="/images/a1.jpg"
                          class="w-full h-full object-cover transition duration-1000 ease-out group-hover:scale-110"
                          alt="Fellowship">
                     <div class="absolute inset-0 bg-gradient-to-t from-blue-950/80 via-transparent to-transparent opacity-60"></div>

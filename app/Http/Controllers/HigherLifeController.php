@@ -91,8 +91,8 @@ class HigherLifeController extends Controller
 
             // 4. Apply matched data or use default
             $data = $matchedData ?? [
-                'title' => 'The Higher Life Series',
-                'video' => '',
+                'title' => 'Sunday Service',
+                'video' => 'https://s3.eu-west-2.amazonaws.com/lodams-videoshare/videos/today112_601699fe3ccc7b0007cbc451.mp4"',
                 'poster'=> 'images/logo.png'
             ];
 
