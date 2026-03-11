@@ -21,10 +21,10 @@
 
         <header class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
-                 <p class="text-gray-400 mt-2 text-lg">Join Our</p>
                 <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-transparent bg-clip-text" style="background-image: linear-gradient(to right, #a78bfa, #f59e0b);">
-                    Sunday Service
+                    The Higher Life
                 </h1>
+                 <p class="text-gray-400 mt-2 text-lg">With Pastor Deola Phillips</p>
             </div>
 
             <button id="openPrayerModal" class="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white px-8 py-3 rounded-full font-semibold transition-all shadow-lg transform hover:scale-105">
