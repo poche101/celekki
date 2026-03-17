@@ -20,12 +20,14 @@
         </div>
 
         <header class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div>
-                <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-transparent bg-clip-text" style="background-image: linear-gradient(to right, #a78bfa, #f59e0b);">
-                    The Higher Life
-                </h1>
-                 <p class="text-gray-400 mt-2 text-lg">With Pastor Deola Phillips</p>
-            </div>
+           <div>
+        <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r {{ $episode->title === 'Sunday Service' ? 'from-blue-400 to-blue-600' : 'from-purple-400 to-orange-500' }}">
+            {{ $episode->title === 'Sunday Service' ? 'Sunday Service' : 'The Higher Life' }}
+        </h1>
+        <p class="text-gray-400 mt-2 text-lg">
+            {{ $episode->title === 'Sunday Service' ? 'Join us for a glorious time in God\'s presence' : 'With Pastor Deola Phillips' }}
+        </p>
+    </div>
 
             <button id="openPrayerModal" class="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white px-8 py-3 rounded-full font-semibold transition-all shadow-lg transform hover:scale-105">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

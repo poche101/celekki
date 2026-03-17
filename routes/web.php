@@ -167,4 +167,3 @@ Route::get('/ep{id}', [HigherLifeController::class, 'showEpisode'])
 
 // 4. Prayer Request Submission (Global for all episodes)
 Route::post('/submit-prayer', [PrayerController::class, 'store'])->name('prayer.store');
-

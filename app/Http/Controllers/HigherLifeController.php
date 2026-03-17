@@ -51,49 +51,53 @@ class HigherLifeController extends Controller
     /**
      * Show Episode Page (Video Player)
      */
-   public function showEpisode($id)
+  public function showEpisode($id)
 {
-    $slug = 'ep' . $id;
+    // 1. Scrub the ID: Remove 'ep' and any non-numeric junk
+    $numericId = preg_replace('/[^0-9]/', '', $id);
+    $slug = 'ep' . $numericId;
 
-    // Security Check: Redirect if session doesn't exist
+    // 2. Security Check: Redirect if session doesn't exist
     if (!session()->has('access_granted_' . $slug)) {
-        return redirect()->route('higher-life.gate', ['id' => $id]);
+        return redirect()->route('higher-life.gate', ['id' => $numericId]);
     }
 
-    // 1. Fetch from Database
+    // 3. Fetch from Database
     $episode = Episode::where('slug', $slug)->first();
 
     if (!$episode) {
-        // 2. Fallback Library
+        // 4. Fallback Library
         $library = [
-            '5'  => ['title' => 'How To Make Your Life What You Want', 'video' => 'https://8v4o6w73awqp-hls-push.5centscdn.com/EPISODE%205%20Repackaged.mp4/playlist.m3u8', 'poster' => 'images/poster5.png'],
-            '12' => ['title' => '2 Of Your Creative Powers', 'video' => 'https://s3.eu-west-2.amazonaws.com/lodams-videoshare/videos/Nov9tEd_5a085fe4f916b95c0f2f58e9.mp4', 'poster' => 'images/power.png'],
-            '14' => ['title' => 'The Study Of Ephesians', 'video' => 'https://s3.eu-west-2.amazonaws.com/lodams-videoshare/videos/h-life13202_601699fe3ccc7b0007cbc451.mp4', 'poster' => 'images/THE.png'],
+            '16' => ['title' => 'The Sons Of God (part 3)', 'video' => 'https://s3.eu-west-2.amazonaws.com/lodams-videoshare/videos/hlife014_601699fe3ccc7b0007cbc451.mp4', 'poster' => 'images/sons3.png'],
             '15' => ['title' => 'The Higher Life', 'video' => 'https://s3.eu-west-2.amazonaws.com/lodams-videoshare/videos/finalep1_61c461d1efb1d00007d781ed.mp4', 'poster' => 'images/ep1.png'],
+            '14' => ['title' => 'The Study Of Ephesians', 'video' => 'https://s3.eu-west-2.amazonaws.com/lodams-videoshare/videos/h-life13202_601699fe3ccc7b0007cbc451.mp4', 'poster' => 'images/THE.png'],
+            '12' => ['title' => '2 Of Your Creative Powers', 'video' => 'https://s3.eu-west-2.amazonaws.com/lodams-videoshare/videos/Nov9tEd_5a085fe4f916b95c0f2f58e9.mp4', 'poster' => 'images/power.png'],
+            '6'  => ['title' => 'How To Make Your Life What You Want', 'video' => 'https://8v4o6w73awqp-hls-push.5centscdn.com/EPISODE%205%20Repackaged.mp4/playlist.m3u8', 'poster' => 'images/poster5.png'],
+            '5'  => ['title' => 'How To Make Your Life What You Want', 'video' => 'https://8v4o6w73awqp-hls-push.5centscdn.com/EPISODE%205%20Repackaged.mp4/playlist.m3u8', 'poster' => 'images/poster5.png'],
         ];
 
-        // --- FIX: Sort keys by length descending ---
-        // This ensures '15' is checked before '5' when the ID is '10015'
-        uksort($library, fn($a, $b) => strlen($b) <=> strlen($a));
+        // Ensure keys are checked by length (Longest first)
+        uksort($library, fn($a, $b) => strlen((string)$b) <=> strlen((string)$a));
 
-        // 3. Match logic
         $matched = null;
+        $searchStr = (string)$numericId;
+
         foreach ($library as $key => $details) {
-            // Check for exact match or suffix match
-            if ($id == $key || \Illuminate\Support\Str::endsWith($id, $key)) {
+            $keyStr = (string)$key;
+
+            // Strict suffix check: Does "10016" end with "16"?
+            if ($searchStr === $keyStr || \Illuminate\Support\Str::endsWith($searchStr, $keyStr)) {
                 $matched = $details;
                 break;
             }
         }
 
-        // 4. Default if no match found
         $data = $matched ?? [
             'title' => 'Sunday Service',
             'video' => 'https://s3.eu-west-2.amazonaws.com/lodams-videoshare/videos/today112_601699fe3ccc7b0007cbc451.mp4',
             'poster' => 'images/logo.png'
         ];
 
-        // Create an "on-the-fly" model instance
         $episode = new Episode();
         $episode->fill([
             'slug'      => $slug,
@@ -103,7 +107,12 @@ class HigherLifeController extends Controller
         ]);
     }
 
-    return view('higherlife.episode', compact('episode', 'slug', 'id'));
+    // Pass 'numericId' instead of 'id' to the view to keep things clean
+    return view('higherlife.episode', [
+        'episode' => $episode,
+        'slug' => $slug,
+        'id' => $numericId
+    ]);
 }
 
     /**
