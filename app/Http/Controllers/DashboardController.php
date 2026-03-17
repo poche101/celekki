@@ -140,6 +140,18 @@ class DashboardController extends Controller
         return response()->stream($callback, 200, $headers);
     }
 
+    public function destroyViewer($id)
+{
+    // 1. Find the record (replace 'Viewer' with your actual Model name)
+    $viewer = \App\Models\Viewer::findOrFail($id);
+
+    // 2. Delete it
+    $viewer->delete();
+
+    // 3. Redirect back with a success message
+    return back()->with('success', 'Viewer record removed successfully.');
+}
+
     /**
      * Generate and stream Google Analytics report CSV
      */

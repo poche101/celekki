@@ -120,6 +120,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/blog', [MembersController::class, 'index'])->name('blog');
         Route::get('/live-stream', [MembersController::class, 'index'])->name('live-stream.view');
         Route::get('/export-social', [DashboardController::class, 'exportSocialData'])->name('social.export');
+       Route::delete('/viewers/{id}', [DashboardController::class, 'destroyViewer'])->name('viewers.destroy');
         Route::prefix('api')->group(function () {
             // Video Management
             Route::get('/videos', [HLifeController::class, 'index'])->name('videos.index');
