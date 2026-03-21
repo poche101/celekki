@@ -213,179 +213,171 @@
         </template>
     </div>
 
-    <nav class="sticky top-0 z-50 bg-white border-b border-slate-100 shadow-sm">
-        <div class="container-fluid px-6 lg:px-12 mx-auto">
-            <div class="flex justify-between h-24 items-center">
-                <div class="flex-shrink-0">
-                    <a href="/"><img src="{{ asset('images/logo.png') }}" alt="Celekki Logo" class="h-20 "></a>
-                </div>
+   <nav class="sticky top-0 z-50 bg-white border-b border-slate-100 shadow-sm">
+    <div class="container-fluid px-6 lg:px-12 mx-auto">
+        <div class="flex justify-between h-20 items-center"> <div class="flex-shrink-0">
+                <a href="/"><img src="{{ asset('images/logo.png') }}" alt="Celekki Logo" class="h-14 lg:h-16"></a>
+            </div>
 
-                <div class="hidden lg:flex items-center space-x-12">
-                    <div class="flex space-x-10 text-[22px] font-medium tracking-tight text-black items-center">
-                        <a href="/" class="nav-link-ltr">Home</a>
-                        <a href="/about" class="nav-link-ltr">About</a>
+            <div class="hidden lg:flex items-center space-x-10">
+                <div class="flex space-x-8 text-base font-medium tracking-tight text-slate-900 items-center">
+                    <a href="/" class="nav-link-ltr">Home</a>
+                    <a href="/about" class="nav-link-ltr">About</a>
 
-                        <div class="relative group"
-                             @mouseenter="pagesDropdown = true"
-                             @mouseleave="pagesDropdown = false">
-                            <button class="nav-link-ltr flex items-center gap-1 py-4 focus:outline-none">
-                                Pages
-                                <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 group-hover:rotate-180"></i>
-                            </button>
-
-                            <div x-show="pagesDropdown"
-                                 x-transition:enter="transition ease-out duration-200"
-                                 x-transition:enter-start="opacity-0 scale-95 translate-y-2"
-                                 x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-                                 x-transition:leave="transition ease-in duration-150"
-                                 x-transition:leave-start="opacity-100 scale-100 translate-y-0"
-                                 x-transition:leave-end="opacity-0 scale-95 translate-y-2"
-                                 class="absolute left-0 w-72 bg-white rounded-[24px] shadow-2xl border border-slate-50 py-4 overflow-hidden" x-cloak>
-
-                                <a href="{{ url('/find-center') }}" class="group flex items-center gap-4 px-6 py-4 hover:bg-slate-50 transition-colors">
-                                    <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center group-hover:bg-indigo-600 group-hover:text-white transition-all">
-                                        <i data-lucide="map-pin" class="w-5 h-5"></i>
-                                    </div>
-                                    <div>
-                                        <p class="text-[17px] font-bold text-slate-900">Mid-WeekService Centers</p>
-                                        <p class="text-xs text-slate-500">Find a center near you</p>
-                                    </div>
-                                </a>
-
-                                <a href="{{ route('testimonies.index') }}" class="group flex items-center gap-4 px-6 py-4 hover:bg-slate-50 transition-colors">
-                                    <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-all">
-                                        <i data-lucide="heart-handshake" class="w-5 h-5"></i>
-                                    </div>
-                                    <div>
-                                        <p class="text-[17px] font-bold text-slate-900">Testimonies</p>
-                                        <p class="text-xs text-slate-500">Voices of impact</p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-
-                        <a href="{{ route('events.index') }}" class="nav-link-ltr">Events</a>
-                        <a href="/h-life" class="nav-link-ltr">Higher Life</a>
-                    </div>
-
-                    <div class="flex items-center space-x-8">
-                        <button @click="checkLiveAccess" class="text-[20px] font-semibold text-black hover:opacity-70 transition flex items-center cursor-pointer focus:outline-none">
-                            <span class="relative flex h-3 w-3 mr-3">
-                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                                <span class="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span>
-                            </span>
-                            Live Stream
+                    <div class="relative group"
+                         @mouseenter="pagesDropdown = true"
+                         @mouseleave="pagesDropdown = false">
+                        <button class="nav-link-ltr flex items-center gap-1 py-4 focus:outline-none">
+                            Pages
+                            <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 group-hover:rotate-180"></i>
                         </button>
 
-                        @guest
-                            <a href="/login" class="flex items-center space-x-3 text-[18px] font-bold text-brand-blue border-2 border-brand-blue px-7 py-2.5 rounded-full hover:bg-brand-blue hover:text-white transition-all active:scale-95">
-                                <i data-lucide="user" class="w-5 h-5"></i>
-                                <span>Login</span>
-                            </a>
-                        @endguest
+                        <div x-show="pagesDropdown"
+                             x-transition:enter="transition ease-out duration-200"
+                             x-transition:enter-start="opacity-0 scale-95 translate-y-2"
+                             x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                             x-transition:leave="transition ease-in duration-150"
+                             x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                             x-transition:leave-end="opacity-0 scale-95 translate-y-2"
+                             class="absolute left-0 w-72 bg-white rounded-[20px] shadow-2xl border border-slate-50 py-3 overflow-hidden" x-cloak>
 
-                        @auth
-                            <div class="relative" x-show="!isLoggingOut">
-                                <button @click.stop="profileDropdown = !profileDropdown" @click.away="profileDropdown = false" class="focus:outline-none group">
-                                    <div class="w-14 h-14 bg-slate-50 border border-slate-200 rounded-full flex items-center justify-center group-hover:border-brand-blue group-hover:shadow-lg transition-all duration-300 overflow-hidden">
-                                        @if(auth()->user()->profile_photo_path)
-                                            <img src="{{ asset('storage/' . auth()->user()->profile_photo_path) }}" class="w-full h-full object-cover">
-                                        @else
-                                            <i data-lucide="user" class="w-8 h-8 text-brand-blue"></i>
-                                        @endif
-                                    </div>
-                                </button>
-                                <div x-show="profileDropdown" x-transition class="absolute right-0 mt-6 w-64 bg-white border border-slate-100 rounded-[24px] shadow-2xl py-3 z-[100]">
-                                    <a href="/profile" class="block px-6 py-4 text-[17px] font-semibold text-black hover:bg-slate-50">My Profile</a>
-                                    <button @click="handleLogout()" class="w-full text-left px-6 py-4 text-[17px] font-semibold text-red-600 hover:bg-red-50">Sign Out</button>
+                            <a href="{{ url('/find-center') }}" class="group flex items-center gap-4 px-5 py-3 hover:bg-slate-50 transition-colors">
+                                <div>
+                                    <p class="text-[15px] font-bold text-slate-900 leading-tight">Mid-Week Service Centers</p>
+
                                 </div>
-                            </div>
-                        @endauth
+                            </a>
+
+                            <a href="{{ route('testimonies.index') }}" class="group flex items-center gap-4 px-5 py-3 hover:bg-slate-50 transition-colors">
+                                <div>
+                                    <p class="text-[15px] font-bold text-slate-900 leading-tight">Testimonies</p>
+
+                                </div>
+                            </a>
+                        </div>
                     </div>
+
+                    <a href="{{ route('events.index') }}" class="nav-link-ltr">Events</a>
+                    <a href="/h-life" class="nav-link-ltr">Higher Life</a>
                 </div>
 
-                <div class="lg:hidden">
-                    <button @click="mobileMenuOpen = true" class="flex flex-col items-end space-y-1.5 p-2 focus:outline-none">
-                        <span class="w-8 h-0.5 bg-brand-blue rounded-full"></span>
-                        <span class="w-8 h-0.5 bg-brand-blue rounded-full"></span>
-                        <span class="w-5 h-0.5 bg-brand-blue rounded-full"></span>
+                <div class="flex items-center space-x-6">
+                    <button @click="checkLiveAccess" class="text-base font-semibold text-slate-900 hover:opacity-70 transition flex items-center cursor-pointer focus:outline-none">
+                        <span class="relative flex h-2.5 w-2.5 mr-2.5">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-600"></span>
+                        </span>
+                        Live Stream
                     </button>
-                </div>
-            </div>
-        </div>
 
-        <div x-show="mobileMenuOpen" class="fixed inset-0 z-[100]" x-cloak>
-            <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-md" @click="mobileMenuOpen = false"></div>
-            <div x-show="mobileMenuOpen"
-                 x-transition:enter="transform transition duration-500"
-                 x-transition:enter-start="translate-x-full"
-                 x-transition:enter-end="translate-x-0"
-                 class="absolute right-0 h-full w-[85%] max-w-sm bg-brand-blue shadow-2xl flex flex-col z-[110]">
+                    @guest
+                        <a href="/login" class="flex items-center space-x-2 text-[15px] font-bold text-brand-blue border-2 border-brand-blue px-6 py-2 rounded-full hover:bg-brand-blue hover:text-white transition-all active:scale-95">
+                            <i data-lucide="user" class="w-4 h-4"></i>
+                            <span>Login</span>
+                        </a>
+                    @endguest
 
-                <div class="bg-white px-10 py-8 flex justify-between items-center shadow-md">
-                    <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-20">
-                    <button @click="mobileMenuOpen = false" class="text-brand-blue focus:outline-none">
-                        <i data-lucide="x" class="w-9 h-9"></i>
-                    </button>
-                </div>
-
-                <div class="flex-grow flex flex-col p-10 space-y-6 overflow-y-auto">
                     @auth
-                        <div class="pb-6 border-b border-white/20 mb-2">
-                            <div class="flex items-center space-x-4">
-                                <div class="w-16 h-16 bg-white/10 rounded-full border-2 border-white/30 flex items-center justify-center overflow-hidden">
+                        <div class="relative" x-show="!isLoggingOut">
+                            <button @click.stop="profileDropdown = !profileDropdown" @click.away="profileDropdown = false" class="focus:outline-none group">
+                                <div class="w-11 h-11 bg-slate-50 border border-slate-200 rounded-full flex items-center justify-center group-hover:border-brand-blue group-hover:shadow-lg transition-all duration-300 overflow-hidden">
                                     @if(auth()->user()->profile_photo_path)
                                         <img src="{{ asset('storage/' . auth()->user()->profile_photo_path) }}" class="w-full h-full object-cover">
                                     @else
-                                        <i data-lucide="user" class="w-8 h-8 text-white"></i>
+                                        <i data-lucide="user" class="w-6 h-6 text-brand-blue"></i>
                                     @endif
                                 </div>
-                                <div>
-                                    <p class="text-white font-medium text-xl">{{ auth()->user()->name }}</p>
-                                    <a href="/profile" class="text-white/60 text-sm flex items-center hover:text-white">
-                                        View Profile <i data-lucide="chevron-right" class="w-3 h-3 ml-1"></i>
-                                    </a>
-                                </div>
+                            </button>
+                            <div x-show="profileDropdown" x-transition class="absolute right-0 mt-4 w-56 bg-white border border-slate-100 rounded-[18px] shadow-2xl py-2 z-[100]">
+                                <a href="/profile" class="block px-5 py-3 text-[15px] font-semibold text-black hover:bg-slate-50">My Profile</a>
+                                <button @click="handleLogout()" class="w-full text-left px-5 py-3 text-[15px] font-semibold text-red-600 hover:bg-red-50">Sign Out</button>
                             </div>
                         </div>
                     @endauth
+                </div>
+            </div>
 
-                    <a href="/" class="text-[20px] text-white">Home</a>
-                    <a href="/about" class="text-[20px] text-white">About</a>
+            <div class="lg:hidden">
+                <button @click="mobileMenuOpen = true" class="flex flex-col items-end space-y-1.5 p-2 focus:outline-none">
+                    <span class="w-8 h-0.5 bg-brand-blue rounded-full"></span>
+                    <span class="w-8 h-0.5 bg-brand-blue rounded-full"></span>
+                    <span class="w-5 h-0.5 bg-brand-blue rounded-full"></span>
+                </button>
+            </div>
+        </div>
+    </div>
 
-                    <div class="space-y-4">
-                        <button @click="mobilePagesOpen = !mobilePagesOpen" class="w-full flex justify-between items-center text-[20px] text-white focus:outline-none">
-                            Pages
-                            <i data-lucide="chevron-down" class="transition-transform" :class="mobilePagesOpen ? 'rotate-180' : ''"></i>
-                        </button>
-                        <div x-show="mobilePagesOpen" x-collapse class="pl-6 space-y-4">
-                            <a href="{{ url('/find-center') }}" class="block text-[20px] text-white/80">Mid-Week Centers</a>
-                            <a href="{{ route('testimonies.index') }}" class="block text-[20px] text-white/80">Testimonies</a>
+    <div x-show="mobileMenuOpen" class="fixed inset-0 z-[100]" x-cloak>
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-md" @click="mobileMenuOpen = false"></div>
+        <div x-show="mobileMenuOpen"
+             x-transition:enter="transform transition duration-400"
+             x-transition:enter-start="translate-x-full"
+             x-transition:enter-end="translate-x-0"
+             class="absolute right-0 h-full w-[80%] max-w-xs bg-brand-blue shadow-2xl flex flex-col z-[110]">
+
+            <div class="bg-white px-8 py-6 flex justify-between items-center shadow-md">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-14">
+                <button @click="mobileMenuOpen = false" class="text-brand-blue focus:outline-none">
+                    <i data-lucide="x" class="w-7 h-7"></i>
+                </button>
+            </div>
+
+            <div class="flex-grow flex flex-col p-8 space-y-5 overflow-y-auto">
+                @auth
+                    <div class="pb-5 border-b border-white/20 mb-2">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-white/10 rounded-full border border-white/30 flex items-center justify-center overflow-hidden">
+                                @if(auth()->user()->profile_photo_path)
+                                    <img src="{{ asset('storage/' . auth()->user()->profile_photo_path) }}" class="w-full h-full object-cover">
+                                @else
+                                    <i data-lucide="user" class="w-6 h-6 text-white"></i>
+                                @endif
+                            </div>
+                            <div>
+                                <p class="text-white font-medium text-lg leading-tight">{{ auth()->user()->name }}</p>
+                                <a href="/profile" class="text-white/60 text-xs flex items-center hover:text-white">
+                                    View Profile <i data-lucide="chevron-right" class="w-3 h-3 ml-1"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
+                @endauth
 
-                    <a href="{{ route('events.index') }}" class="text-[20px] text-white">Events</a>
-                    <a href="/h-life" class="text-[20px] text-white">Higher Life</a>
+                <a href="/" class="text-lg text-white font-medium">Home</a>
+                <a href="/about" class="text-lg text-white font-medium">About</a>
 
-                    <button @click="checkLiveAccess" class="text-[20px] font-medium text-white flex items-center focus:outline-none">
-                        <span class="w-2.5 h-2.5 bg-red-500 rounded-full mr-3 animate-pulse"></span>Live Stream
+                <div class="space-y-3">
+                    <button @click="mobilePagesOpen = !mobilePagesOpen" class="w-full flex justify-between items-center text-lg text-white font-medium focus:outline-none">
+                        Pages
+                        <i data-lucide="chevron-down" class="w-5 h-5 transition-transform" :class="mobilePagesOpen ? 'rotate-180' : ''"></i>
                     </button>
-
-                    <div class="pt-10">
-                        @auth
-                            <button @click="handleLogout()" class="w-full border-2 border-white text-white py-4 rounded-2xl font-bold flex items-center justify-center space-x-2">
-                                <i data-lucide="log-out" class="w-5 h-5"></i>
-                                <span>Sign Out</span>
-                            </button>
-                        @else
-                            <a href="/login" class="w-full border-2 border-white text-white py-4 rounded-2xl block text-center font-bold">Login</a>
-                        @endauth
+                    <div x-show="mobilePagesOpen" x-collapse class="pl-4 space-y-3">
+                        <a href="{{ url('/find-center') }}" class="block text-base text-white/80">Mid-Week Centers</a>
+                        <a href="{{ route('testimonies.index') }}" class="block text-base text-white/80">Testimonies</a>
                     </div>
+                </div>
+
+                <a href="{{ route('events.index') }}" class="text-lg text-white font-medium">Events</a>
+                <a href="/h-life" class="text-lg text-white font-medium">Higher Life</a>
+
+                <button @click="checkLiveAccess" class="text-lg font-medium text-white flex items-center focus:outline-none">
+                    <span class="w-2 h-2 bg-red-500 rounded-full mr-3 animate-pulse"></span>Live Stream
+                </button>
+
+                <div class="pt-8">
+                    @auth
+                        <button @click="handleLogout()" class="w-full border border-white/50 text-white py-3.5 rounded-xl font-bold text-base flex items-center justify-center space-x-2">
+                            <i data-lucide="log-out" class="w-4 h-4"></i>
+                            <span>Sign Out</span>
+                        </button>
+                    @else
+                        <a href="/login" class="w-full border-2 border-white text-white py-3.5 rounded-xl block text-center font-bold text-base">Login</a>
+                    @endguest
                 </div>
             </div>
         </div>
-    </nav>
-
+    </div>
+</nav>
     <div x-show="liveModalOpen" class="fixed inset-0 z-[200] flex items-center justify-center p-4" x-cloak>
         <div class="absolute inset-0 modal-backdrop" @click="liveModalOpen = false"></div>
         <div class="relative bg-white w-full max-w-lg rounded-[32px] shadow-2xl overflow-hidden p-8 md:p-12">
