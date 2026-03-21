@@ -38,24 +38,24 @@
     <section id="about" class="py-16 bg-slate-50 relative">
         <div class="max-w-6xl mx-auto px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="group p-8 rounded-[2rem] bg-white border border-slate-100 hover:shadow-xl transition-all duration-500 reveal-up">
-                    <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <div class="group p-8 bg-white border border-slate-100 hover:shadow-xl transition-all duration-500 reveal-up">
+                    <div class="w-12 h-12 bg-blue-50 text-blue-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                         <i data-lucide="crosshair" class="w-6 h-6"></i>
                     </div>
                     <h3 class="text-lg font-black mb-3">Our Vision</h3>
                     <p class="text-[14px] text-slate-500 leading-relaxed font-medium">To take His divine presence to the peoples and nations of the world, demonstrating the character of His Spirit.</p>
                 </div>
 
-                <div class="group p-8 rounded-[2rem] bg-slate-900 text-white shadow-xl reveal-up" style="transition-delay: 100ms;">
-                    <div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center mb-6">
+                <div class="group p-8 bg-slate-900 text-white shadow-xl reveal-up" style="transition-delay: 100ms;">
+                    <div class="w-12 h-12 bg-blue-500 flex items-center justify-center mb-6">
                         <i data-lucide="globe" class="w-6 h-6 text-white"></i>
                     </div>
                     <h3 class="text-lg font-black mb-3">More Than A Church</h3>
                     <p class="text-[14px] text-slate-400 leading-relaxed font-medium">You become part of something that’s more than a local assembly; you become part of God's global vision.</p>
                 </div>
 
-                <div class="group p-8 rounded-[2rem] bg-white border border-slate-100 hover:shadow-xl transition-all duration-500 reveal-up" style="transition-delay: 200ms;">
-                    <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <div class="group p-8 bg-white border border-slate-100 hover:shadow-xl transition-all duration-500 reveal-up" style="transition-delay: 200ms;">
+                    <div class="w-12 h-12 bg-blue-50 text-blue-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                         <i data-lucide="sun" class="w-6 h-6"></i>
                     </div>
                     <h3 class="text-lg font-black mb-3">Life Meaning</h3>
@@ -78,8 +78,8 @@
                     </div>
                 </div>
                 <div class="lg:w-1/2 reveal-right">
-                    <div class="relative p-1 bg-gradient-to-tr from-blue-100 to-indigo-50 rounded-[2.5rem]">
-                        <div class="bg-slate-900 p-10 md:p-12 rounded-[2.4rem] shadow-xl relative overflow-hidden">
+                    <div class="relative p-1 bg-gradient-to-tr from-blue-100 to-indigo-50">
+                        <div class="bg-slate-900 p-10 md:p-12 shadow-xl relative overflow-hidden">
                             <i data-lucide="quote" class="absolute top-6 right-6 w-12 h-12 text-white/5"></i>
                             <p class="text-lg md:text-xl font-light italic leading-relaxed text-blue-100 relative z-10">
                                 "This is achieved through every available means, as the Ministry is driven by a passion to see men all over the world come to the knowledge of the divine life."
@@ -103,7 +103,7 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 <div class="lg:col-span-5 space-y-6 reveal-left">
-                    <div class="bg-white rounded-[2rem] shadow-lg border border-slate-100 overflow-hidden">
+                    <div class="bg-white shadow-lg border border-slate-100 overflow-hidden">
                         <div class="p-6 space-y-6">
                             <div class="flex items-center justify-between">
                                 <div>
@@ -131,22 +131,22 @@
                 </div>
 
                 <div class="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-4 reveal-right">
-                    <div class="group bg-white p-6 rounded-[2rem] border border-slate-100 hover:border-blue-500 transition-all shadow-sm">
+                    <div class="group bg-white p-6 border border-slate-100 hover:border-blue-500 transition-all shadow-sm">
                         <i data-lucide="users" class="w-8 h-8 text-blue-600 mb-4"></i>
                         <h4 class="text-lg font-black text-slate-900 mb-1">Communion Service</h4>
                         <p class="text-[13px] text-slate-500 mb-4">Global broadcast with Pastor Chris Oyakhilome.</p>
                         <div class="pt-4 border-t border-slate-50 flex justify-between items-center text-[11px] font-black text-blue-600 uppercase">
-                            <span>1st Sunday</span>
+                            <span>1st Sunday Of The Month</span>
                             <span class="text-slate-900">3:00 PM</span>
                         </div>
                     </div>
 
-                    <div class="group bg-slate-900 p-6 rounded-[2rem] text-white shadow-xl">
+                    <div class="group bg-slate-900 p-6 text-white shadow-xl">
                         <i data-lucide="zap" class="w-8 h-8 text-blue-400 mb-4"></i>
                         <h4 class="text-lg font-black text-white mb-1">Manifestation Rally</h4>
                         <p class="text-[13px] text-slate-400 mb-4">Prayer and prophecy session for Lagos Zone 5.</p>
                         <div class="pt-4 border-t border-white/10 flex justify-between items-center text-[11px] font-black text-blue-400 uppercase">
-                            <span>1st Saturday</span>
+                            <span>1st Saturday Of The Month</span>
                             <span class="text-white">6:00 AM</span>
                         </div>
                     </div>
@@ -155,6 +155,7 @@
         </div>
     </section>
 </main>
+
 <style>
     @keyframes fadeInLeft {
         from { opacity: 0; transform: translateX(-50px); }
