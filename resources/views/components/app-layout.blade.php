@@ -215,12 +215,13 @@
 
    <nav class="sticky top-0 z-50 bg-white border-b border-slate-100 shadow-sm">
     <div class="container-fluid px-6 lg:px-12 mx-auto">
-        <div class="flex justify-between h-20 items-center"> <div class="flex-shrink-0">
+        <div class="flex justify-between h-20 items-center">
+            <div class="flex-shrink-0">
                 <a href="/"><img src="{{ asset('images/logo.png') }}" alt="Celekki Logo" class="h-14 lg:h-16"></a>
             </div>
 
             <div class="hidden lg:flex items-center space-x-10">
-                <div class="flex space-x-8 text-base font-medium tracking-tight text-slate-900 items-center">
+                <div class="flex space-x-8 text-[15px] font-medium tracking-tight text-slate-900 items-center">
                     <a href="/" class="nav-link-ltr">Home</a>
                     <a href="/about" class="nav-link-ltr">About</a>
 
@@ -240,19 +241,11 @@
                              x-transition:leave-start="opacity-100 scale-100 translate-y-0"
                              x-transition:leave-end="opacity-0 scale-95 translate-y-2"
                              class="absolute left-0 w-72 bg-white rounded-[20px] shadow-2xl border border-slate-50 py-3 overflow-hidden" x-cloak>
-
                             <a href="{{ url('/find-center') }}" class="group flex items-center gap-4 px-5 py-3 hover:bg-slate-50 transition-colors">
-                                <div>
-                                    <p class="text-[15px] font-bold text-slate-900 leading-tight">Mid-Week Service Centers</p>
-
-                                </div>
+                                <p class="text-[15px] font-bold text-slate-900 leading-tight">Mid-Week Service Centers</p>
                             </a>
-
                             <a href="{{ route('testimonies.index') }}" class="group flex items-center gap-4 px-5 py-3 hover:bg-slate-50 transition-colors">
-                                <div>
-                                    <p class="text-[15px] font-bold text-slate-900 leading-tight">Testimonies</p>
-
-                                </div>
+                                <p class="text-[15px] font-bold text-slate-900 leading-tight">Testimonies</p>
                             </a>
                         </div>
                     </div>
@@ -262,7 +255,7 @@
                 </div>
 
                 <div class="flex items-center space-x-6">
-                    <button @click="checkLiveAccess" class="text-base font-semibold text-slate-900 hover:opacity-70 transition flex items-center cursor-pointer focus:outline-none">
+                    <button @click="checkLiveAccess" class="text-[15px] font-semibold text-slate-900 hover:opacity-70 transition flex items-center cursor-pointer focus:outline-none">
                         <span class="relative flex h-2.5 w-2.5 mr-2.5">
                             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                             <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-600"></span>
@@ -307,13 +300,29 @@
         </div>
     </div>
 
-    <div x-show="mobileMenuOpen" class="fixed inset-0 z-[100]" x-cloak>
-        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-md" @click="mobileMenuOpen = false"></div>
+    <div x-show="mobileMenuOpen"
+         class="fixed inset-0 z-[100]"
+         style="display: none;"
+         x-cloak>
+
         <div x-show="mobileMenuOpen"
-             x-transition:enter="transform transition duration-400"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition ease-in duration-300"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="absolute inset-0 bg-slate-900/60 backdrop-blur-md"
+             @click="mobileMenuOpen = false"></div>
+
+        <div x-show="mobileMenuOpen"
+             x-transition:enter="transition ease-out duration-400"
              x-transition:enter-start="translate-x-full"
              x-transition:enter-end="translate-x-0"
-             class="absolute right-0 h-full w-[80%] max-w-xs bg-brand-blue shadow-2xl flex flex-col z-[110]">
+             x-transition:leave="transition ease-in duration-400"
+             x-transition:leave-start="translate-x-0"
+             x-transition:leave-end="translate-x-full"
+             class="absolute right-0 top-0 h-full w-[80%] max-w-xs bg-brand-blue shadow-2xl flex flex-col z-[110]">
 
             <div class="bg-white px-8 py-6 flex justify-between items-center shadow-md">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-14">
@@ -322,7 +331,7 @@
                 </button>
             </div>
 
-            <div class="flex-grow flex flex-col p-8 space-y-5 overflow-y-auto">
+            <div class="flex-grow flex flex-col p-8 space-y-6 overflow-y-auto">
                 @auth
                     <div class="pb-5 border-b border-white/20 mb-2">
                         <div class="flex items-center space-x-4">
@@ -334,8 +343,8 @@
                                 @endif
                             </div>
                             <div>
-                                <p class="text-white font-medium text-lg leading-tight">{{ auth()->user()->name }}</p>
-                                <a href="/profile" class="text-white/60 text-xs flex items-center hover:text-white">
+                                <p class="text-white font-medium text-[17px] leading-tight">{{ auth()->user()->name }}</p>
+                                <a href="/profile" class="text-white/60 text-[13px] flex items-center hover:text-white">
                                     View Profile <i data-lucide="chevron-right" class="w-3 h-3 ml-1"></i>
                                 </a>
                             </div>
@@ -343,35 +352,35 @@
                     </div>
                 @endauth
 
-                <a href="/" class="text-lg text-white font-medium">Home</a>
-                <a href="/about" class="text-lg text-white font-medium">About</a>
+                <a href="/" class="text-[17px] text-white font-medium">Home</a>
+                <a href="/about" class="text-[17px] text-white font-medium">About</a>
 
-                <div class="space-y-3">
-                    <button @click="mobilePagesOpen = !mobilePagesOpen" class="w-full flex justify-between items-center text-lg text-white font-medium focus:outline-none">
+                <div class="space-y-4">
+                    <button @click="mobilePagesOpen = !mobilePagesOpen" class="w-full flex justify-between items-center text-[17px] text-white font-medium focus:outline-none">
                         Pages
                         <i data-lucide="chevron-down" class="w-5 h-5 transition-transform" :class="mobilePagesOpen ? 'rotate-180' : ''"></i>
                     </button>
-                    <div x-show="mobilePagesOpen" x-collapse class="pl-4 space-y-3">
-                        <a href="{{ url('/find-center') }}" class="block text-base text-white/80">Mid-Week Centers</a>
-                        <a href="{{ route('testimonies.index') }}" class="block text-base text-white/80">Testimonies</a>
+                    <div x-show="mobilePagesOpen" x-collapse class="pl-4 space-y-4">
+                        <a href="{{ url('/find-center') }}" class="block text-[15px] text-white/80">Mid-Week Centers</a>
+                        <a href="{{ route('testimonies.index') }}" class="block text-[15px] text-white/80">Testimonies</a>
                     </div>
                 </div>
 
-                <a href="{{ route('events.index') }}" class="text-lg text-white font-medium">Events</a>
-                <a href="/h-life" class="text-lg text-white font-medium">Higher Life</a>
+                <a href="{{ route('events.index') }}" class="text-[17px] text-white font-medium">Events</a>
+                <a href="/h-life" class="text-[17px] text-white font-medium">Higher Life</a>
 
-                <button @click="checkLiveAccess" class="text-lg font-medium text-white flex items-center focus:outline-none">
+                <button @click="checkLiveAccess" class="text-[17px] font-medium text-white flex items-center focus:outline-none">
                     <span class="w-2 h-2 bg-red-500 rounded-full mr-3 animate-pulse"></span>Live Stream
                 </button>
 
                 <div class="pt-8">
                     @auth
-                        <button @click="handleLogout()" class="w-full border border-white/50 text-white py-3.5 rounded-xl font-bold text-base flex items-center justify-center space-x-2">
+                        <button @click="handleLogout()" class="w-full border border-white/50 text-white py-3.5 rounded-xl font-bold text-[16px] flex items-center justify-center space-x-2">
                             <i data-lucide="log-out" class="w-4 h-4"></i>
                             <span>Sign Out</span>
                         </button>
                     @else
-                        <a href="/login" class="w-full border-2 border-white text-white py-3.5 rounded-xl block text-center font-bold text-base">Login</a>
+                        <a href="/login" class="w-full border-2 border-white text-white py-3.5 rounded-xl block text-center font-bold text-[16px]">Login</a>
                     @endguest
                 </div>
             </div>
