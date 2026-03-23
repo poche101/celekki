@@ -15,7 +15,7 @@
             </div>
         </div>
 
-        {{-- <section class="max-w-6xl mx-auto px-4 py-8">
+      <!-- <section class="max-w-6xl mx-auto px-4 py-8">
             <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-100">
                 <div class="relative aspect-video bg-black group">
                     <video id="liveVideo" autoplay muted controls playsinline class="w-full h-full"></video>
@@ -43,7 +43,7 @@
                     </div>
                 </div>
             </div>
-        </section> --}}
+        </section>  -->
 
         <header
             class="relative w-full h-auto lg:h-[80vh] lg:min-h-[600px] flex items-center justify-center overflow-hidden bg-white">
