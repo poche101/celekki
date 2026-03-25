@@ -16,7 +16,7 @@
         </div>
 
     
-        <header
+        <!-- <header
             class="relative w-full h-auto lg:h-[80vh] lg:min-h-[600px] flex items-center justify-center overflow-hidden bg-white">
             <div class="relative lg:absolute lg:inset-0 z-0 w-full">
                 <img src="/images/hero.png" class="w-full h-auto lg:h-full object-contain lg:object-cover"
@@ -25,7 +25,38 @@
                 <div class="absolute inset-0 bg-gradient-to-r from-blue-900/10 to-transparent pointer-events-none">
                 </div>
             </div>
-        </header>
+        </header> -->
+
+                      <section class="max-w-6xl mx-auto px-4 py-8">
+            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-100">
+                <div class="relative aspect-video bg-black group">
+                    <video id="liveVideo" autoplay muted controls playsinline class="w-full h-full"></video>
+
+                    <div id="offlineCover"
+                        class="absolute inset-0 flex flex-col items-center justify-center bg-slate-900/95 text-white hidden">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 mb-4 text-slate-500" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M18.364 5.636a9 9 0 010 12.728m0 0l-2.829-2.829m2.829 2.829L21 21M15.536 8.464a5 5 0 010 7.072m0 0l-2.829-2.829m-4.243 4.243a5 5 0 01-7.072 0m0 0l2.829-2.829m-4.243-4.243a9 9 0 0112.728 0m0 0l-2.829 2.829" />
+                        </svg>
+                        <p class="text-xl font-medium">Broadcast is currently offline</p>
+                    </div>
+                </div>
+
+                <div class="p-6 flex flex-wrap items-center justify-between gap-4 bg-white border-t border-slate-50">
+                    <div class="flex items-center gap-3">
+                        <span id="liveStatus"
+                            class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-200 text-slate-600">Checking...</span>
+                        <h2 id="nowPlaying" class="text-slate-700 font-semibold">Now Playing: Live Program</h2>
+                    </div>
+                    <div class="flex items-center gap-2 text-slate-500">
+                        <i class="bi bi-eye text-blue-500"></i>
+                        <span id="viewerCount" class="font-mono font-bold text-lg">0</span>
+                    </div>
+                </div>
+            </div>
+        </section> 
+
 
         <section class="py-10 bg-gradient-to-br from-slate-50 to-blue-50">
             <div class="max-w-6xl mx-auto px-4">
@@ -369,7 +400,7 @@
             const video = document.getElementById('liveVideo');
             const offlineCover = document.getElementById('offlineCover');
             const liveStatus = document.getElementById('liveStatus');
-            const streamUrl = "https://vcpout-sf01-altnetro.internetmultimediaonline.org/vcp/aa5ad237/playlist.m3u8";
+            const streamUrl = "https://pvqybrzodz24-hls-live.5centscdn.com/churchservice/5c04b4a0841613e584f8b582b4af4e0e.sdp/playlist.m3u8";
 
             function updateUI(isLive) {
                 if (isLive) {
