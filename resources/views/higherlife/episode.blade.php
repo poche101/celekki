@@ -25,7 +25,7 @@
             {{ $episode->title === 'Sunday Service' ? 'Sunday Service' : 'The Higher Life' }}
         </h1>
         <p class="text-gray-400 mt-2 text-lg">
-            {{ $episode->title === 'Sunday Service' ? 'Join us for a glorious time in God\'s presence' : 'With Pastor Chris' }}
+            {{ $episode->title === 'Sunday Service' ? 'Join us for a glorious time in God\'s presence' : 'With Pastor Deola Phillips' }}
         </p>
     </div>
 
@@ -53,7 +53,7 @@
                     <span class="text-purple-400 font-mono text-sm uppercase tracking-widest">Episode {{ $id }}</span>
                     <h2 class="text-3xl font-bold mt-2">{{ $episode->title }}</h2>
                     <p class="text-gray-400 mt-4 leading-relaxed text-lg max-w-2xl">
-                        With Pastor Deola Phillips
+                        With Pastor Chris
                     </p>
                 </div>
             </div>
