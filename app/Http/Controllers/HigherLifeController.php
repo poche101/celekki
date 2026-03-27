@@ -72,7 +72,7 @@ class HigherLifeController extends Controller
             '16' => ['title' => 'The Sons Of God (part 3)', 'video' => 'https://s3.eu-west-2.amazonaws.com/lodams-videoshare/videos/hlife014_601699fe3ccc7b0007cbc451.mp4', 'poster' => 'images/sons3.png'],
             '15' => ['title' => 'The Higher Life', 'video' => 'https://s3.eu-west-2.amazonaws.com/lodams-videoshare/videos/finalep1_61c461d1efb1d00007d781ed.mp4', 'poster' => 'images/ep1.png'],
             '14' => ['title' => 'The Study Of Ephesians', 'video' => 'https://s3.eu-west-2.amazonaws.com/lodams-videoshare/videos/h-life13202_601699fe3ccc7b0007cbc451.mp4', 'poster' => 'images/THE.png'],
-            '13' => ['title' => 'CE Lekki Sunday Service', 'video' => 'https://vcpout-sf01-altnetro.internetmultimediaonline.org/ext/ext1.smil/playlist.m3u8', 'poster' => 'images/logo.png'],
+            '13' => ['title' => 'Global Day Of Prayer', 'video' => 'https://vcpout-sf01-altnetro.internetmultimediaonline.org/ext/ext1.smil/playlist.m3u8', 'poster' => 'images/logo.png'],
             '12' => ['title' => '2 Of Your Creative Powers', 'video' => 'https://s3.eu-west-2.amazonaws.com/lodams-videoshare/videos/Nov9tEd_5a085fe4f916b95c0f2f58e9.mp4', 'poster' => 'images/power.png'],
             '6'  => ['title' => 'How To Make Your Life What You Want', 'video' => 'https://8v4o6w73awqp-hls-push.5centscdn.com/EPISODE%205%20Repackaged.mp4/playlist.m3u8', 'poster' => 'images/poster5.png'],
             '5'  => ['title' => 'How To Make Your Life What You Want', 'video' => 'https://8v4o6w73awqp-hls-push.5centscdn.com/EPISODE%205%20Repackaged.mp4/playlist.m3u8', 'poster' => 'images/poster5.png'],
