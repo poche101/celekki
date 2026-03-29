@@ -400,7 +400,7 @@
             const video = document.getElementById('liveVideo');
             const offlineCover = document.getElementById('offlineCover');
             const liveStatus = document.getElementById('liveStatus');
-            const streamUrl = "https://vcpout-sf01-altnetro.internetmultimediaonline.org/ext/ext1.smil/playlist.m3u8";
+            const streamUrl = "https://vcpout-sf01-altnetro.internetmultimediaonline.org/vcp/aa5ad237/playlist.m3u8";
 
             function updateUI(isLive) {
                 if (isLive) {
