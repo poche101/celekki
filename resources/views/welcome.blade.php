@@ -47,7 +47,7 @@
                     <div class="flex items-center gap-3">
                         <span id="liveStatus"
                             class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-200 text-slate-600">Checking...</span>
-                        <h2 id="nowPlaying" class="text-slate-700 font-semibold">Now Playing: CE Lekki Sunday Service</h2>
+                        <h2 id="nowPlaying" class="text-slate-700 font-semibold">Now Playing: Global fasting And Prayer With Pastor Chris</h2>
                     </div>
                     <div class="flex items-center gap-2 text-slate-500">
                         <i class="bi bi-eye text-blue-500"></i>
@@ -400,7 +400,7 @@
             const video = document.getElementById('liveVideo');
             const offlineCover = document.getElementById('offlineCover');
             const liveStatus = document.getElementById('liveStatus');
-            const streamUrl = "https://vcpout-sf01-altnetro.internetmultimediaonline.org/vcp/aa5ad237/playlist.m3u8";
+            const streamUrl = "https://vcpout-sf01-altnetro.internetmultimediaonline.org/ext/ext1.smil/playlist.m3u8";
 
             function updateUI(isLive) {
                 if (isLive) {
