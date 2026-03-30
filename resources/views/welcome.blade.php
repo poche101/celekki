@@ -16,7 +16,7 @@
         </div>
 
     
-        <!-- <header
+        <header
             class="relative w-full h-auto lg:h-[80vh] lg:min-h-[600px] flex items-center justify-center overflow-hidden bg-white">
             <div class="relative lg:absolute lg:inset-0 z-0 w-full">
                 <img src="/images/hero.png" class="w-full h-auto lg:h-full object-contain lg:object-cover"
@@ -25,8 +25,8 @@
                 <div class="absolute inset-0 bg-gradient-to-r from-blue-900/10 to-transparent pointer-events-none">
                 </div>
             </div>
-        </header> -->
-
+        </header>
+<!-- 
                       <section class="max-w-6xl mx-auto px-4 py-8">
             <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-100">
                 <div class="relative aspect-video bg-black group">
@@ -55,7 +55,7 @@
                     </div>
                 </div>
             </div>
-        </section> 
+        </section>  -->
 
 
         <section class="py-10 bg-gradient-to-br from-slate-50 to-blue-50">
