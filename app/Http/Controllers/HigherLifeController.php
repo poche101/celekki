@@ -68,7 +68,7 @@ class HigherLifeController extends Controller
     if (!$episode) {
         // 4. Fallback Library
         $library = [
-             '18' => ['title' => 'Discover How To Realign With Gods Plan For Your Life', 'video' => 'https://s3.eu-west-2.amazonaws.com/lodams-videoshare/videos/THLEpd2u_61c461d1efb1d00007d781ed.mp4', 'poster' => 'images/discover.png'],
+             '18' => ['title' => 'Discover How To Re-align With Gods Plan For Your Life', 'video' => 'https://s3.eu-west-2.amazonaws.com/lodams-videoshare/videos/THLEpd2u_61c461d1efb1d00007d781ed.mp4', 'poster' => 'images/discover.png'],
             '17' => ['title' => 'The Sons Of God (part 3)', 'video' => 'https://s3.eu-west-2.amazonaws.com/lodams-videoshare/videos/EP16_5a085fe4f916b95c0f2f58e9.mp4', 'poster' => 'images/sons3.png'],
             '16' => ['title' => 'The Sons Of God (part 3)', 'video' => 'https://s3.eu-west-2.amazonaws.com/lodams-videoshare/videos/hlife014_601699fe3ccc7b0007cbc451.mp4', 'poster' => 'images/sons3.png'],
             '15' => ['title' => 'The Higher Life', 'video' => 'https://s3.eu-west-2.amazonaws.com/lodams-videoshare/videos/finalep1_61c461d1efb1d00007d781ed.mp4', 'poster' => 'images/ep1.png'],
