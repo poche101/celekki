@@ -53,7 +53,7 @@
                     <span class="text-purple-400 font-mono text-sm uppercase tracking-widest">Episode {{ $id }}</span>
                     <h2 class="text-3xl font-bold mt-2">{{ $episode->title }}</h2>
                     <p class="text-gray-400 mt-4 leading-relaxed text-lg max-w-2xl">
-                        With Pastor Chris
+                        With Pastor Deola Phillips
                     </p>
                 </div>
             </div>
