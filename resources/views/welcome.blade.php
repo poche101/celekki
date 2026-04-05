@@ -51,7 +51,7 @@
                     </div>
                     <div class="flex items-center gap-2 text-slate-500">
                         <i class="bi bi-eye text-blue-500"></i>
-                        <span id="viewerCount" class="font-mono font-bold text-lg">0</span>
+                        <span id="viewerCount" class="font-mono font-bold text-lg"></span>
                     </div>
                 </div>
             </div>
