@@ -16,7 +16,7 @@
         </div>
 
     
-        <header
+        <!-- <header
             class="relative w-full h-auto lg:h-[80vh] lg:min-h-[600px] flex items-center justify-center overflow-hidden bg-white">
             <div class="relative lg:absolute lg:inset-0 z-0 w-full">
                 <img src="/images/hero.png" class="w-full h-auto lg:h-full object-contain lg:object-cover"
@@ -25,9 +25,9 @@
                 <div class="absolute inset-0 bg-gradient-to-r from-blue-900/10 to-transparent pointer-events-none">
                 </div>
             </div>
-        </header>
+        </header> -->
 
-                      <!-- <section class="max-w-6xl mx-auto px-4 py-8">
+                      <section class="max-w-6xl mx-auto px-4 py-8">
             <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-100">
                 <div class="relative aspect-video bg-black group">
                     <video id="liveVideo" autoplay muted controls playsinline class="w-full h-full"></video>
@@ -47,7 +47,7 @@
                     <div class="flex items-center gap-3">
                         <span id="liveStatus"
                             class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-200 text-slate-600">Checking...</span>
-                        <h2 id="nowPlaying" class="text-slate-700 font-semibold">Now Playing: Memorial Service Of Dr Patrick Onwumere</h2>
+                        <h2 id="nowPlaying" class="text-slate-700 font-semibold">Now Playing: Sunday Morning Service</h2>
                     </div>
                     <div class="flex items-center gap-2 text-slate-500">
                         <i class="bi bi-eye text-blue-500"></i>
@@ -55,7 +55,7 @@
                     </div>
                 </div>
             </div>
-        </section>  -->
+        </section> 
 
 
         <section class="py-10 bg-gradient-to-br from-slate-50 to-blue-50">
@@ -400,7 +400,7 @@
             const video = document.getElementById('liveVideo');
             const offlineCover = document.getElementById('offlineCover');
             const liveStatus = document.getElementById('liveStatus');
-            const streamUrl = "https://cdnstack.internetmultimediaonline.org/ceflixstreams/STREAM73ICO/playlist.m3u8";
+            const streamUrl = "https://vcpout-sf01-altnetro.internetmultimediaonline.org/vcp/aa5ad237/playlist.m3u8";
 
             function updateUI(isLive) {
                 if (isLive) {
