@@ -120,10 +120,10 @@
                     <div class="flex items-center justify-center transition-all duration-500 order-2 lg:order-1">
                         <div
                             class="w-full aspect-video overflow-hidden shadow-xl bg-slate-950 border border-white/10 relative group">
-                            <video controls preload="metadata" poster="/images/sons3.png"
+                            <video controls preload="metadata" poster="/images/kingdom.png"
                                 class="w-full h-full object-cover">
                                 <source
-                                    src="https://s3.eu-west-2.amazonaws.com/lodams-videoshare/videos/EP16_5a085fe4f916b95c0f2f58e9.mp4"
+                                    src="https://s3.eu-west-2.amazonaws.com/lodams-videoshare/videos/h-lifk_601699fe3ccc7b0007cbc451.mp4"
                                     type="video/mp4">
                             </video>
                         </div>
