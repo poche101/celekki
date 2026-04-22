@@ -400,7 +400,7 @@
             const video = document.getElementById('liveVideo');
             const offlineCover = document.getElementById('offlineCover');
             const liveStatus = document.getElementById('liveStatus');
-            const streamUrl = "https://pvqybrzodz24-hls-live.5centscdn.com/churchservice/5c04b4a0841613e584f8b582b4af4e0e.sdp/playlist.m3u8";
+            const streamUrl = "https://vcpout-sf01-altnetro.internetmultimediaonline.org/vcp/aa5ad237/playlist.m3u8";
 
             function updateUI(isLive) {
                 if (isLive) {
