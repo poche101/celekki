@@ -123,8 +123,7 @@
                             <video controls preload="metadata" poster="/images/kingdom.png"
                                 class="w-full h-full object-cover">
                                 <source
-                                    src="https://s3.eu-west-2.amazonaws.com/lodams-videoshare/videos/h-lifk_601699fe3ccc7b0007cbc451.mp4"
-                                    type="video/mp4">
+                                    src="https://s3.eu-west-2.amazonaws.com/lodams-videoshare/videos/h-lifs_601699fe3ccc7b0007cbc451.mp4">
                             </video>
                         </div>
                     </div>
@@ -142,8 +141,8 @@
                         </span>
                         <h2 class="text-3xl font-extrabold text-slate-900 mb-4 tracking-tight">The Higher Life</h2>
                         <div class="border-l-4 border-blue-400 pl-4 mb-6">
-                            <p class="text-base text-slate-600 leading-relaxed">With Pastor Deola Phillips. A refreshing
-                                time with the Word and divine encounters.</p>
+                            <p class="text-base text-slate-600 leading-relaxed">With Pastor Deola Phillips. Children Of The Kingdom
+                               (Full Episode)</p>
                         </div>
                         <a href="/h-life"
                             class="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-md border border-slate-200 text-blue-500 text-sm font-bold hover:bg-blue-600 hover:text-white transition-all group">
