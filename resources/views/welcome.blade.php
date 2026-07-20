@@ -32,6 +32,15 @@
                 <div class="relative aspect-video bg-black group">
                     <video id="liveVideo" autoplay muted controls playsinline class="w-full h-full"></video>
 
+                    <button id="pipBtn" title="Picture in Picture"
+                        class="hidden absolute top-3 right-3 z-10 items-center justify-center w-9 h-9 rounded-md bg-black/60 hover:bg-blue-600 text-white transition-colors opacity-0 group-hover:opacity-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="5" width="18" height="14" rx="1.5" />
+                            <rect x="12" y="12" width="7" height="5" rx="1" fill="currentColor" stroke="none" />
+                        </svg>
+                    </button>
+
                     <div id="offlineCover"
                         class="absolute inset-0 flex flex-col items-center justify-center bg-slate-900/95 text-white hidden">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 mb-4 text-slate-500" fill="none"
@@ -283,7 +292,7 @@
                     </div>
                 </div>
                 <p class="text-base text-slate-400 leading-relaxed font-light max-w-md">
-                    LoveWorld Incorporated, (a.k.a Christ Embassy) is a global ministry with a vision of taking God’s divine presence to the nations of the world and to demonstrate the character of the Holy Spirit.
+                    LoveWorld Incorporated, (a.k.a Christ Embassy) is a global ministry with a vision of taking God's divine presence to the nations of the world and to demonstrate the character of the Holy Spirit.
                 </p>
             </div>
 
@@ -399,6 +408,7 @@
             const video = document.getElementById('liveVideo');
             const offlineCover = document.getElementById('offlineCover');
             const liveStatus = document.getElementById('liveStatus');
+            const pipBtn = document.getElementById('pipBtn');
             const streamUrl = "https://vcpout-sf01-altnetro.internetmultimediaonline.org/vcp/aa5ad237/playlist.m3u8";
 
             function updateUI(isLive) {
@@ -434,6 +444,39 @@
                     video.play().catch(() => {});
                     updateUI(true);
                 });
+            }
+
+            // --- Picture-in-Picture support ---
+            if (document.pictureInPictureEnabled) {
+                pipBtn.classList.remove('hidden');
+                pipBtn.classList.add('flex');
+
+                pipBtn.addEventListener('click', async () => {
+                    try {
+                        if (document.pictureInPictureElement) {
+                            await document.exitPictureInPicture();
+                        } else {
+                            await video.requestPictureInPicture();
+                        }
+                    } catch (err) {
+                        console.error('PiP failed:', err);
+                    }
+                });
+
+                // Auto pop into PiP when the stream scrolls out of view,
+                // and drop back out when the section returns into view.
+                const streamSection = video.closest('section');
+                const pipObserver = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (!entry.isIntersecting && !video.paused && !document.pictureInPictureElement) {
+                            video.requestPictureInPicture().catch(() => {});
+                        } else if (entry.isIntersecting && document.pictureInPictureElement) {
+                            document.exitPictureInPicture().catch(() => {});
+                        }
+                    });
+                }, { threshold: 0.15 });
+
+                pipObserver.observe(streamSection);
             }
         </script>
 
