@@ -132,7 +132,7 @@
                             <video controls preload="metadata" poster="/images/kingdom.png"
                                 class="w-full h-full object-cover">
                                 <source
-                                    src="https://s3.eu-west-2.amazonaws.com/lodams-videoshare/videos/h-lifs_601699fe3ccc7b0007cbc451.mp4">
+                                    src="https://s3.eu-west-2.amazonaws.com/lodams-videoshare/videos/27hl_601699fe3ccc7b0007cbc451.mp4" type="video/mp4">
                             </video>
                         </div>
                     </div>
