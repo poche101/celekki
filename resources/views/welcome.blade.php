@@ -150,7 +150,7 @@
                         </span>
                         <h2 class="text-3xl font-extrabold text-slate-900 mb-4 tracking-tight">The Higher Life</h2>
                         <div class="border-l-4 border-blue-400 pl-4 mb-6">
-                            <p class="text-base text-slate-600 leading-relaxed">With Pastor Deola Phillips. Children Of The Kingdom
+                            <p class="text-base text-slate-600 leading-relaxed">With Pastor Deola Phillips. The Manifestation Of Christ In You.
                                (Full Episode)</p>
                         </div>
                         <a href="/h-life"
